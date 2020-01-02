@@ -9,52 +9,85 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @Author: mrt.
- * @Description:
- * @Date:Created in 2018/1/24 10:04.
- * @Modified By:
+ * CMS页面管理实体类@Data注解完成getter，setter等
+ * 方法的注解，@Document是mongodb数据库集合的注解
+ *
+ * @author wjw
+ * @since JDK1.8
  */
 @Data
 @ToString
 @Document(collection = "cms_page")
 public class CmsPage {
     /**
-     * 页面名称、别名、访问地址、类型（静态/动态）、页面模版、状态
+     * 站点id
      */
-    //站点ID
     private String siteId;
-    //页面ID
+    /**
+     * 页面id
+     */
     @Id
     private String pageId;
-    //页面名称
+
+    /**
+     * 页面名称
+     */
     private String pageName;
-    //别名
+    /**
+     * 别名
+     */
     private String pageAliase;
-    //访问地址
+    /**
+     * 访问地址
+     */
     private String pageWebPath;
-    //参数
+    /**
+     * 页面参数
+     */
     private String pageParameter;
-    //物理路径
+    /**
+     * 页面的物理路径
+     */
     private String pagePhysicalPath;
-    //类型（静态/动态）
+    /**
+     * 页面分类
+     */
     private String pageType;
-    //页面模版
+    /**
+     * 页面模板
+     */
     private String pageTemplate;
-    //页面静态化内容
+    /**
+     * 页面静态化内容
+     */
     private String pageHtml;
-    //状态
+    /**
+     * 页面状态
+     */
     private String pageStatus;
-    //创建时间
+    /**
+     * 页面创建时间
+     */
     private Date pageCreateTime;
-    //模版id
+    /**
+     * 模板id
+     */
     private String templateId;
-    //参数列表
+    /**
+     * 页面参数
+     */
     private List<CmsPageParam> pageParams;
-    //模版文件Id
-//    private String templateFileId;
-    //静态文件Id
+    /**
+     * 模板文件id
+     */
+    private String templateFileId;
+    /**
+     * 静态文件id
+     */
     private String htmlFileId;
-    //数据Url
+    /**
+     * 数据url
+     */
     private String dataUrl;
 
 }

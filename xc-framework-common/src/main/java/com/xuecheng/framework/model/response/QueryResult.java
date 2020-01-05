@@ -6,10 +6,11 @@ import lombok.ToString;
 import java.util.List;
 
 /**
- * @Author: mrt.
- * @Description:
- * @Date:Created in 2018/1/24 18:33.
- * @Modified By:
+ * cms页面管理查询条件
+ *
+ * @param <T> 泛型
+ * @author wjw
+ * @since JDK1.9
  */
 @Data
 @ToString

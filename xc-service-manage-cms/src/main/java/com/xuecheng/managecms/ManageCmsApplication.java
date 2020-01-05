@@ -1,4 +1,4 @@
-package com.xuecheng.manage_cms;
+package com.xuecheng.managecms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @EntityScan("com.xuecheng.framework.domain.cms")
-@ComponentScan("com.xuecheng.api.cms")
+@ComponentScan({"com.xuecheng.api.cms","com.xuecheng.managecms"})
 public class ManageCmsApplication {
     public static void main(String[] args) {
         SpringApplication.run(ManageCmsApplication.class, args);

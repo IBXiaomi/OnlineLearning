@@ -17,5 +17,5 @@ public interface CmsPageControllerApi {
      * @param queryPageRequest 查询条件
      * @return 返回查询结果
      */
-    QueryResponseResult findList(int page, int size, QueryPageRequest queryPageRequest);
+    QueryResponseResult findPage(int page, int size, QueryPageRequest queryPageRequest);
 }

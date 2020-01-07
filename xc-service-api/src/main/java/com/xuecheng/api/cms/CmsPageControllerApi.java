@@ -12,8 +12,10 @@ import com.xuecheng.framework.model.response.QueryResponseResult;
 public interface CmsPageControllerApi {
     /**
      * 分页查询数据
-     *
-     * @return 返回规划好的实体类
+     * @param page 当前页
+     * @param size 每页显示的数据
+     * @param queryPageRequest 查询条件
+     * @return 返回查询结果
      */
-    QueryResponseResult findList(int page, int size, QueryPageRequest queryPageRequest);
+    QueryResponseResult findPage(int page, int size, QueryPageRequest queryPageRequest);
 }

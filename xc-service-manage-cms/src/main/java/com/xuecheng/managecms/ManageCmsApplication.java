@@ -13,7 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @EntityScan("com.xuecheng.framework.domain.cms")
-@ComponentScan({"com.xuecheng.api.cms","com.xuecheng.managecms"})
+@ComponentScan({"com.xuecheng.api","com.xuecheng.managecms"})
 public class ManageCmsApplication {
     public static void main(String[] args) {
         SpringApplication.run(ManageCmsApplication.class, args);

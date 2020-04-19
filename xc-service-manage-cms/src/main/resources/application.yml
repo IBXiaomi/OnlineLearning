@@ -2,7 +2,14 @@ server:
   port: 31001
 spring:
   application:
-    name: xc-service-manage-cms
+    name: xc_service_manage_cms
   data:
     mongodb:
-      uri:  mongodb://localhost:27017/xc_cms
+      uri: mongodb://localhost:27017
+      database: xc_cms
+#  devtools:
+#    restart:
+#      enabled: true #开启热部署
+#  freemarker:
+#    cache: false #不加载缓存
+

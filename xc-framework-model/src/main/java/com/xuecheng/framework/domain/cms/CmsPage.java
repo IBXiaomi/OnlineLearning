@@ -9,25 +9,26 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * CMS页面管理实体类@Data注解完成getter，setter等
- * 方法的注解，@Document是mongodb数据库集合的注解
+ * 页面名称、别名、访问地址、类型（静态/动态）、页面模版、状态
+ * mongodb和springboot的对应，使用@Document注解一一对应
  *
- * @author wjw
- * @since JDK1.8
+ * @author 吧嘻小米
+ * @date 2020/04/19
  */
 @Data
 @ToString
 @Document(collection = "cms_page")
 public class CmsPage {
-    /**
-     * 站点id
-     */
-    private String siteId;
+
     /**
      * 页面id
      */
     @Id
     private String pageId;
+    /**
+     * 站点id
+     */
+    private String siteId;
 
     /**
      * 页面名称

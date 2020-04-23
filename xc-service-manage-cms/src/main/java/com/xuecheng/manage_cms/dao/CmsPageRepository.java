@@ -1,8 +1,6 @@
 package com.xuecheng.manage_cms.dao;
 
 import com.xuecheng.framework.domain.cms.CmsPage;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 
@@ -16,9 +14,14 @@ import org.springframework.stereotype.Component;
 @Component
 public interface CmsPageRepository extends MongoRepository<CmsPage, String> {
 
-    /**
-     * 分页查询
-     */
-    @Override
-    Page<CmsPage> findAll(Pageable pageable);
+//    /**
+//     * 分页查询
+//     */
+//
+//    Page<CmsPage> findByPageName(Pageable pageable);
+//
+//    /**
+//     * 条件查询
+//     */
+//    List<CmsPage> findAll(Example example);
 }

@@ -7,6 +7,7 @@ import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.manage_cms.dao.CmsPageRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -37,17 +38,19 @@ public class CmsPageService {
     public QueryResponseResult findPage(int page, int size, QueryPageRequest queryPageRequest) {
         // 初始化查询条件
         CmsPage cmsPage = new CmsPage();
+        // withMatcher表示模糊匹配的方式，当前表示以pageAliase为模糊匹配项，匹配方式为包含
         ExampleMatcher exampleMatcher = ExampleMatcher.matching().withMatcher("pageAliase", ExampleMatcher.GenericPropertyMatchers.contains());
         if (null == queryPageRequest) {
             queryPageRequest = new QueryPageRequest();
         }
-        if (null != queryPageRequest.getSiteId()) {
+        // 不能使用(null!=queryPageRequest.getSiteId())来判断是否为空，!=判断的是内存地址，不是实际的值
+        if (StringUtils.isNotEmpty(queryPageRequest.getSiteId())) {
             cmsPage.setSiteId(queryPageRequest.getSiteId());
         }
-        if (null != queryPageRequest.getTemplateId()) {
+        if (StringUtils.isNotEmpty(queryPageRequest.getTemplateId())) {
             cmsPage.setPageTemplate(queryPageRequest.getTemplateId());
         }
-        if (null != queryPageRequest.getPageAliase()) {
+        if (StringUtils.isNotEmpty(queryPageRequest.getPageAliase())) {
             cmsPage.setPageAliase(queryPageRequest.getPageAliase());
         }
         log.info("start to service findPage");

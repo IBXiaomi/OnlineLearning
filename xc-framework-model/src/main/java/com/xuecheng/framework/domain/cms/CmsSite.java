@@ -1,39 +1,47 @@
 package com.xuecheng.framework.domain.cms;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 import java.util.Date;
-import java.util.List;
 
 /**
- * @Author: mrt.
- * @Description:
- * @Date:Created in 2018/1/24 9:46.
- * @Modified By:
+ * cms_site的collection属性类
+ *
+ * @author 吧嘻小米
+ * @date 2020/04/25
  */
 @Data
 @ToString
 @Document(collection = "cms_site")
 public class CmsSite {
 
-    //站点ID
+    /**
+     * 站点id
+     */
     @Id
     private String siteId;
-    //站点名称
+    /**
+     * 站点名称
+     */
     private String siteName;
-    //站点名称
+    /**
+     * 站点ip
+     */
     private String siteDomain;
-    //站点端口
+    /**
+     * 站点port
+     */
     private String sitePort;
-    //站点访问地址
+    /**
+     * 站点的WebPath
+     */
     private String siteWebPath;
-    //创建时间
+    /**
+     * 创建时间
+     */
     private Date siteCreateTime;
 
 }

@@ -1,9 +1,11 @@
 package com.xuecheng.manage_cms.controller;
 
 import com.xuecheng.api.cms.CmsPageControllerApi;
+import com.xuecheng.api.cms.CmsSiteControllerApi;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.manage_cms.service.CmsPageService;
+import com.xuecheng.manage_cms.service.CmsSiteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,10 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Slf4j
 @RequestMapping("/cms/page")
-public class CmsPageController implements CmsPageControllerApi {
+public class CmsPageController implements CmsPageControllerApi, CmsSiteControllerApi {
 
     @Autowired
     CmsPageService cmsPageService;
+
+    @Autowired
+    CmsSiteService cmsSiteService;
 
     @GetMapping("/list/{page}/{size}")
     public QueryResponseResult findPage(@PathVariable("page") int page, @PathVariable("size") int size, QueryPageRequest queryPageRequest) {
@@ -39,4 +44,15 @@ public class CmsPageController implements CmsPageControllerApi {
     }
 
 
+    @Override
+    @GetMapping("/getSiteById/{id}")
+    public QueryResponseResult findById(@PathVariable("id") String id) {
+        return cmsSiteService.findById(id);
+    }
+
+    @Override
+    @GetMapping("/getAllSite")
+    public QueryResponseResult findAll() {
+        return cmsSiteService.findAll();
+    }
 }

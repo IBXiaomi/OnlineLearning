@@ -29,4 +29,13 @@ public interface CmsPageControllerApi {
             @ApiImplicitParam(name = "size", value = "每页显示的数量", paramType = "path", required = true, dataType = "int")
     })
     QueryResponseResult findPage(int page, int size, QueryPageRequest queryPageRequest);
+
+    /**
+     * 根据页面id查询页面
+     *
+     * @param id 页面id
+     * @return 返回查询结果
+     */
+    @ApiOperation(value = "根据页面id查询页面")
+    QueryResponseResult findPageById(String id);
 }

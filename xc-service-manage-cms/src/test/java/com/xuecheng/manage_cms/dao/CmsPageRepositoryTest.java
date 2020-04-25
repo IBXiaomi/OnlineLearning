@@ -48,4 +48,26 @@ public class CmsPageRepositoryTest {
         List<CmsPage> all = cmsPageRepository.findAll(example);
         System.out.println(all);
     }
+
+    /**
+     * 测试条件查询
+     */
+    @Test
+    public void testFindByCon() {
+//        ExampleMatcher exampleMatcher = ExampleMatcher.matching().withMatcher("pageAliase", ExampleMatcher.GenericPropertyMatchers.contains());
+//        int page = 1;
+//        int size = 10;
+//        CmsPage cmsPage = new CmsPage();
+//        cmsPage.setSiteId(null);
+//        cmsPage.setPageAliase(null);
+//        Pageable pageable = PageRequest.of(page, size);
+//        Example<CmsPage> example = Example.of(cmsPage, exampleMatcher);
+//        Page<CmsPage> cmsPagePage = cmsPageRepository.findAll(example, pageable);
+//        System.out.println(cmsPagePage.getContent());
+//        System.out.println(cmsPagePage.getTotalElements());
+        System.out.println("".hashCode());
+        String str=null;
+        System.out.println(str);
+
+    }
 }

@@ -31,4 +31,12 @@ public class CmsPageController implements CmsPageControllerApi {
         // 此处的cmsPageService需要保证与dao中的对象同步加载,否则可能会有空指针异常，不能采用new对象的方式
         return cmsPageService.findPage(page, size, queryPageRequest);
     }
+
+    @Override
+    @GetMapping("/get/{id}")
+    public QueryResponseResult findPageById(@PathVariable("id") String id) {
+        return null;
+    }
+
+
 }

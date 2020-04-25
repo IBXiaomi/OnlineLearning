@@ -8,10 +8,10 @@ import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.manage_cms.dao.CmsPageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * cms页面管理
@@ -27,7 +27,7 @@ public class CmsPageService {
     CmsPageRepository cmsPageRepository;
 
     /**
-     * 分页查询
+     * 分页查询,条件查询
      *
      * @param page             当前页，mongodb查询是从第0页开始
      * @param size             每页展示的数据
@@ -35,6 +35,21 @@ public class CmsPageService {
      * @return 查询结果
      */
     public QueryResponseResult findPage(int page, int size, QueryPageRequest queryPageRequest) {
+        // 初始化查询条件
+        CmsPage cmsPage = new CmsPage();
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching().withMatcher("pageAliase", ExampleMatcher.GenericPropertyMatchers.contains());
+        if (null == queryPageRequest) {
+            queryPageRequest = new QueryPageRequest();
+        }
+        if (null != queryPageRequest.getSiteId()) {
+            cmsPage.setSiteId(queryPageRequest.getSiteId());
+        }
+        if (null != queryPageRequest.getTemplateId()) {
+            cmsPage.setPageTemplate(queryPageRequest.getTemplateId());
+        }
+        if (null != queryPageRequest.getPageAliase()) {
+            cmsPage.setPageAliase(queryPageRequest.getPageAliase());
+        }
         log.info("start to service findPage");
         if (page <= 0) {
             page = 1;
@@ -44,11 +59,26 @@ public class CmsPageService {
         }
         page = page - 1;
         Pageable pageable = PageRequest.of(page, size);
-        Page<CmsPage> cmsPagePage = cmsPageRepository.findAll(pageable);
+        Example<CmsPage> example = Example.of(cmsPage, exampleMatcher);
+        Page<CmsPage> cmsPagePage = cmsPageRepository.findAll(example, pageable);
         QueryResult queryResult = new QueryResult();
         queryResult.setList(cmsPagePage.getContent());
         queryResult.setTotal(cmsPagePage.getTotalElements());
         return new QueryResponseResult(CommonCode.SUCCESS, queryResult);
+    }
+
+    /**
+     * 根据页面id查询页面
+     *
+     * @param id 页面id
+     * @return 查询结果
+     */
+    public CmsPage findPageById(String id) {
+        Optional<CmsPage> cmsPage = cmsPageRepository.findById(id);
+        if (cmsPage.isPresent()) {
+            return cmsPage.get();
+        }
+        return null;
     }
 }
 

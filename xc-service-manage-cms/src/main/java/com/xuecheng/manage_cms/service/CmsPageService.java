@@ -2,6 +2,7 @@ package com.xuecheng.manage_cms.service;
 
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
+import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
@@ -36,6 +37,7 @@ public class CmsPageService {
      * @return 查询结果
      */
     public QueryResponseResult findPage(int page, int size, QueryPageRequest queryPageRequest) {
+        log.info("start to find cmsPage");
         // 初始化查询条件
         CmsPage cmsPage = new CmsPage();
         // withMatcher表示模糊匹配的方式，当前表示以pageAliase为模糊匹配项，匹配方式为包含
@@ -53,7 +55,6 @@ public class CmsPageService {
         if (StringUtils.isNotEmpty(queryPageRequest.getPageAliase())) {
             cmsPage.setPageAliase(queryPageRequest.getPageAliase());
         }
-        log.info("start to service findPage");
         if (page <= 0) {
             page = 1;
         }
@@ -82,6 +83,32 @@ public class CmsPageService {
             return cmsPage.get();
         }
         return null;
+    }
+
+    /**
+     * 新增页面
+     *
+     * @param cmsPage 新增页面
+     * @return 返回插入结果
+     */
+    public CmsPageResult addCmsPage(CmsPage cmsPage) {
+        log.info("start to add cmsPage");
+
+        // 首先要根据前端传进来的数据查询数据库中是否存在数据
+        CmsPage oldCmsPage = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
+        if (null == oldCmsPage) {
+            // 保证页面id是数据库自己添加,自己增长
+            cmsPage.setPageId(null);
+            CmsPage newCmsPage = null;
+            try {
+                newCmsPage = cmsPageRepository.save(cmsPage);
+            } catch (Exception e) {
+                log.error("fail to save cmsPage {}", e.toString());
+            }
+            return new CmsPageResult(CommonCode.SUCCESS, newCmsPage);
+        }
+
+        return new CmsPageResult(CommonCode.FAIL, null);
     }
 }
 

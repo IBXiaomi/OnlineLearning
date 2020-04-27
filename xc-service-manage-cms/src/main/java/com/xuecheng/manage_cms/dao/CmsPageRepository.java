@@ -24,4 +24,6 @@ public interface CmsPageRepository extends MongoRepository<CmsPage, String> {
 //     * 条件查询
 //     */
 //    List<CmsPage> findAll(Example example);
+
+    CmsPage findByPageNameAndSiteIdAndPageWebPath(String pageName, String siteId, String pageWebPath);
 }

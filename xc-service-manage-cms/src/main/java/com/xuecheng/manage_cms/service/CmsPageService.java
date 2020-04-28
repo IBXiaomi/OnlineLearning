@@ -107,7 +107,7 @@ public class CmsPageService {
             }
             return new CmsPageResult(CommonCode.SUCCESS, newCmsPage);
         }
-
+        log.info("fail to save cmsPage , this cmsPage is exist");
         return new CmsPageResult(CommonCode.FAIL, null);
     }
 }

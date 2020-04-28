@@ -6,26 +6,36 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
- * @Author: mrt.
- * @Description:
- * @Date:Created in 2018/1/24 10:04.
- * @Modified By:
+ * 页面模板数据字段
+ *
+ * @author 吧嘻小米
+ * @date 2020/04/28
  */
 @Data
 @ToString
 @Document(collection = "cms_template")
 public class CmsTemplate {
 
-    //站点ID
+    /**
+     * 站点id
+     */
     private String siteId;
-    //模版ID
+    /**
+     * 模板id
+     */
     @Id
     private String templateId;
-    //模版名称
+    /**
+     * 模板名称
+     */
     private String templateName;
-    //模版参数
+    /**
+     * 模板参数
+     */
     private String templateParameter;
 
-    //模版文件Id
+    /**
+     * 模板文件id
+     */
     private String templateFileId;
 }

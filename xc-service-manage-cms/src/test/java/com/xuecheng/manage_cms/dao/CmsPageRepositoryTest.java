@@ -8,7 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * dao测试
@@ -66,8 +68,20 @@ public class CmsPageRepositoryTest {
 //        System.out.println(cmsPagePage.getContent());
 //        System.out.println(cmsPagePage.getTotalElements());
         System.out.println("".hashCode());
-        String str=null;
+        String str = null;
         System.out.println(str);
+    }
 
+    @Test
+    public void testFindAllSiteId() {
+        Set<String> siteset = new HashSet<>();
+        Set<String> tempset = new HashSet<>();
+        List<CmsPage> allCmsPage = cmsPageRepository.findAll();
+        for (CmsPage cmsPage : allCmsPage) {
+            siteset.add(cmsPage.getSiteId());
+            tempset.add(cmsPage.getPageTemplate());
+        }
+        System.out.println(siteset);
+        System.out.println(tempset);
     }
 }

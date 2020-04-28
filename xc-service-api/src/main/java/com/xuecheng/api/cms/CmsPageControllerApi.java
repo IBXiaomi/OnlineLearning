@@ -47,5 +47,6 @@ public interface CmsPageControllerApi {
      * @param cmsPage 新增页面
      * @return 返回插入页面结果
      */
+    @ApiOperation(value = "新增页面")
     CmsPageResult addCmsPage(CmsPage cmsPage);
 }

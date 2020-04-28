@@ -1,10 +1,11 @@
 package com.xuecheng.manage_cms.service;
 
-import com.xuecheng.framework.domain.cms.CmsSite;
+import com.xuecheng.framework.domain.cms.CmsTemplate;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
-import com.xuecheng.manage_cms.dao.CmsSiteRepository;
+import com.xuecheng.manage_cms.dao.CmsTemplateRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CmsSiteService {
-
+@Slf4j
+public class CmsTemplateService {
     @Autowired
-    private CmsSiteRepository cmsSiteRepository;
+    private CmsTemplateRepository cmsTemplateRepository;
 
     /**
      * 查询所有的cms_site
@@ -24,10 +25,11 @@ public class CmsSiteService {
      * @return 返回查询结果
      */
     public QueryResponseResult findAll() {
-        List<CmsSite> cmsSites = cmsSiteRepository.findAll();
+        log.info("strt to find all Template");
+        List<CmsTemplate> cmsTemplates = cmsTemplateRepository.findAll();
         QueryResult queryResult = new QueryResult();
-        queryResult.setList(cmsSites);
-        queryResult.setTotal(cmsSites.size());
+        queryResult.setList(cmsTemplates);
+        queryResult.setTotal(cmsTemplates.size());
         return new QueryResponseResult(CommonCode.SUCCESS, queryResult);
     }
 
@@ -38,15 +40,15 @@ public class CmsSiteService {
      * @return 返回查询结果
      */
     public QueryResponseResult findById(String id) {
-        Optional<CmsSite> cmsSiteOptional = cmsSiteRepository.findById(id);
-        CmsSite cmsSite = new CmsSite();
-        if (cmsSiteOptional.isPresent()) {
-            cmsSite = cmsSiteOptional.get();
+        Optional<CmsTemplate> cmsTemplateOptional = cmsTemplateRepository.findById(id);
+        CmsTemplate cmsTemplate = new CmsTemplate();
+        if (cmsTemplateOptional.isPresent()) {
+            cmsTemplate = cmsTemplateOptional.get();
         }
         QueryResult queryResult = new QueryResult();
-        List<CmsSite> cmsSiteList = new ArrayList<>();
-        cmsSiteList.add(cmsSite);
-        queryResult.setList(cmsSiteList);
+        List<CmsTemplate> cmsTemplateList = new ArrayList<>();
+        cmsTemplateList.add(cmsTemplate);
+        queryResult.setList(cmsTemplateList);
         return new QueryResponseResult(CommonCode.SUCCESS, queryResult);
     }
 }

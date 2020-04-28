@@ -2,12 +2,14 @@ package com.xuecheng.manage_cms.controller;
 
 import com.xuecheng.api.cms.CmsPageControllerApi;
 import com.xuecheng.api.cms.CmsSiteControllerApi;
+import com.xuecheng.api.cms.CmsTemplateControllerApi;
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.manage_cms.service.CmsPageService;
 import com.xuecheng.manage_cms.service.CmsSiteService;
+import com.xuecheng.manage_cms.service.CmsTemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +23,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 @RequestMapping("/cms/page")
-public class CmsPageController implements CmsPageControllerApi, CmsSiteControllerApi {
+public class CmsPageController implements CmsPageControllerApi, CmsSiteControllerApi, CmsTemplateControllerApi {
 
     @Autowired
     CmsPageService cmsPageService;
 
     @Autowired
     CmsSiteService cmsSiteService;
+
+    @Autowired
+    CmsTemplateService cmsTemplateService;
+
 
     /**
      * 分页查询，自定义条件查询
@@ -81,5 +87,10 @@ public class CmsPageController implements CmsPageControllerApi, CmsSiteControlle
     @GetMapping("/getAllSite")
     public QueryResponseResult findAll() {
         return cmsSiteService.findAll();
+    }
+
+    @GetMapping("/getAllTemplate")
+    public QueryResponseResult findAllTemplate() {
+        return cmsTemplateService.findAll();
     }
 }

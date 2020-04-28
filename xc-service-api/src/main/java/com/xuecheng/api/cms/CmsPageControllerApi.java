@@ -1,6 +1,8 @@
 package com.xuecheng.api.cms;
 
+import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
+import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -38,4 +40,12 @@ public interface CmsPageControllerApi {
      */
     @ApiOperation(value = "根据页面id查询页面")
     QueryResponseResult findPageById(String id);
+
+    /**
+     * 新增页面
+     *
+     * @param cmsPage 新增页面
+     * @return 返回插入页面结果
+     */
+    CmsPageResult addCmsPage(CmsPage cmsPage);
 }

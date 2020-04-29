@@ -4,6 +4,7 @@ import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
+import com.xuecheng.framework.model.response.ResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -39,7 +40,7 @@ public interface CmsPageControllerApi {
      * @return 返回查询结果
      */
     @ApiOperation(value = "根据页面id查询页面")
-    QueryResponseResult findPageById(String id);
+    CmsPage findPageById(String id);
 
     /**
      * 新增页面
@@ -49,4 +50,21 @@ public interface CmsPageControllerApi {
      */
     @ApiOperation(value = "新增页面")
     CmsPageResult addCmsPage(CmsPage cmsPage);
+
+    /**
+     * 根据页面id删除页面
+     *
+     * @param id 页面id
+     * @return 返回执行结果
+     */
+    ResponseResult deleteCmsPage(String id);
+
+    /**
+     * 修改页面
+     *
+     * @param id      页面id
+     * @param cmsPage 旧页面信息
+     * @return 返回修改结果
+     */
+    CmsPageResult update(String id, CmsPage cmsPage);
 }

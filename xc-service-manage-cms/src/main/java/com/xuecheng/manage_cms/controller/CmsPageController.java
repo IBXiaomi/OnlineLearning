@@ -1,15 +1,12 @@
 package com.xuecheng.manage_cms.controller;
 
 import com.xuecheng.api.cms.CmsPageControllerApi;
-import com.xuecheng.api.cms.CmsSiteControllerApi;
-import com.xuecheng.api.cms.CmsTemplateControllerApi;
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
+import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_cms.service.CmsPageService;
-import com.xuecheng.manage_cms.service.CmsSiteService;
-import com.xuecheng.manage_cms.service.CmsTemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,16 +20,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 @RequestMapping("/cms/page")
-public class CmsPageController implements CmsPageControllerApi, CmsSiteControllerApi, CmsTemplateControllerApi {
+public class CmsPageController implements CmsPageControllerApi {
 
     @Autowired
     CmsPageService cmsPageService;
-
-    @Autowired
-    CmsSiteService cmsSiteService;
-
-    @Autowired
-    CmsTemplateService cmsTemplateService;
 
 
     /**
@@ -58,8 +49,8 @@ public class CmsPageController implements CmsPageControllerApi, CmsSiteControlle
      */
     @Override
     @GetMapping("/get/{id}")
-    public QueryResponseResult findPageById(@PathVariable("id") String id) {
-        return null;
+    public CmsPage findPageById(@PathVariable("id") String id) {
+        return cmsPageService.findPageById(id);
     }
 
     /**
@@ -76,21 +67,29 @@ public class CmsPageController implements CmsPageControllerApi, CmsSiteControlle
         return cmsPageService.addCmsPage(cmsPage);
     }
 
-
+    /**
+     * 根据id删除页面
+     *
+     * @param id 页面id
+     * @return ResponseResult
+     */
     @Override
-    @GetMapping("/getSiteById/{id}")
-    public QueryResponseResult findById(@PathVariable("id") String id) {
-        return cmsSiteService.findById(id);
+    @GetMapping("/del/{id}")
+    public ResponseResult deleteCmsPage(@PathVariable("id") String id) {
+        return cmsPageService.deleteCmsPage(id);
     }
 
+    /**
+     * 根据id修改页面
+     *
+     * @param id      页面id
+     * @param cmsPage 旧页面信息
+     * @return CmsPageResult
+     */
     @Override
-    @GetMapping("/getAllSite")
-    public QueryResponseResult findAll() {
-        return cmsSiteService.findAll();
+    @PutMapping("/edit/{id}")
+    public CmsPageResult update(@PathVariable("id") String id, @RequestBody CmsPage cmsPage) {
+        return cmsPageService.editCmsPageById(id, cmsPage);
     }
 
-    @GetMapping("/getAllTemplate")
-    public QueryResponseResult findAllTemplate() {
-        return cmsTemplateService.findAll();
-    }
 }

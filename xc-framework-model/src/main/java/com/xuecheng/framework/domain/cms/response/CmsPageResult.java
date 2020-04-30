@@ -6,12 +6,16 @@ import com.xuecheng.framework.model.response.ResultCode;
 import lombok.Data;
 
 /**
- * Created by mrt on 2018/3/31.
+ * 响应结果
+ *
+ * @author 吧嘻小米
+ * @date 2020/04/29
  */
 @Data
 public class CmsPageResult extends ResponseResult {
     CmsPage cmsPage;
-    public CmsPageResult(ResultCode resultCode,CmsPage cmsPage) {
+
+    public CmsPageResult(ResultCode resultCode, CmsPage cmsPage) {
         super(resultCode);
         this.cmsPage = cmsPage;
     }

@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * dao测试
@@ -66,8 +66,58 @@ public class CmsPageRepositoryTest {
 //        System.out.println(cmsPagePage.getContent());
 //        System.out.println(cmsPagePage.getTotalElements());
         System.out.println("".hashCode());
-        String str=null;
+        String str = null;
         System.out.println(str);
+    }
 
+    /**
+     * 查询所有的site
+     */
+    @Test
+    public void testFindAllSiteId() {
+        Set<String> siteset = new HashSet<>();
+        Set<String> tempset = new HashSet<>();
+        List<CmsPage> allCmsPage = cmsPageRepository.findAll();
+        for (CmsPage cmsPage : allCmsPage) {
+            siteset.add(cmsPage.getSiteId());
+            tempset.add(cmsPage.getPageTemplate());
+        }
+        System.out.println(siteset);
+        System.out.println(tempset);
+    }
+
+    /**
+     * 修改页面
+     */
+    @Test
+    public void testEditCmsPage() {
+        CmsPage saveCmsPage = null;
+        Optional<CmsPage> cmsPage = cmsPageRepository.findById("5ea97e96c821bf34c016887f");
+        if (cmsPage.isPresent()) {
+            CmsPage cmsPage1 = cmsPage.get();
+            cmsPage1.setPageName("wjw2222");
+            cmsPage1.setPageCreateTime(new Date());
+            cmsPage1.setPageAliase("wjw3333");
+            cmsPageRepository.save(cmsPage1);
+        }
+    }
+
+    @Test
+    public void testDeleteCmsPage() {
+        CmsPage saveCmsPage = null;
+        Optional<CmsPage> cmsPage = cmsPageRepository.findById("5ea98104c821bf34c0168880");
+        if (cmsPage.isPresent()) {
+            CmsPage cmsPage1 = cmsPage.get();
+            cmsPageRepository.delete(cmsPage1);
+        }
+    }
+
+    @Test
+    public void testFindCmsPageById(){
+        Optional<CmsPage> cmsPage = cmsPageRepository.findById("5ea97e96c821bf34c016887f");
+        if(cmsPage.isPresent()){
+            CmsPage cmsPage1 = cmsPage.get();
+            System.out.println(cmsPage1);
+        }
     }
 }

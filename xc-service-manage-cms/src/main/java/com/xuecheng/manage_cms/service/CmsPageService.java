@@ -6,6 +6,7 @@ import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
+import com.xuecheng.framework.model.response.ResponseResult;
 import com.xuecheng.manage_cms.dao.CmsPageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -86,6 +87,57 @@ public class CmsPageService {
     }
 
     /**
+     * 根据页面id修改页面
+     *
+     * @param id      页面id
+     * @param cmsPage 页面信息
+     * @return 返回修改结果
+     */
+    public CmsPageResult editCmsPageById(String id, CmsPage cmsPage) {
+        CmsPage saveCmsPage = null;
+        log.info("start to edit cmsPage");
+        if (StringUtils.isNotEmpty(id)) {
+            CmsPage pageById = findPageById(id);
+            if (null != cmsPage) {
+                pageById.setSiteId(cmsPage.getSiteId());
+                pageById.setPageAliase(cmsPage.getPageAliase());
+                pageById.setPageTemplate(cmsPage.getPageTemplate());
+                pageById.setPageName(cmsPage.getPageName());
+                pageById.setPageCreateTime(cmsPage.getPageCreateTime());
+                pageById.setPagePhysicalPath(cmsPage.getPagePhysicalPath());
+                pageById.setPageWebPath(cmsPage.getPageWebPath());
+                pageById.setPageType(cmsPage.getPageType());
+                cmsPageRepository.save(pageById);
+                return new CmsPageResult(CommonCode.SUCCESS, cmsPage);
+            } else {
+                log.error("cmsPage is null ,please check cmsPage information");
+            }
+
+        } else {
+            log.error("cmsPage id is null ,please check cmsPage id");
+        }
+        return new CmsPageResult(CommonCode.FAIL, null);
+    }
+
+    /**
+     * 根据id删除页面
+     *
+     * @param id 页面id
+     * @return 返回删除结果
+     */
+    public ResponseResult deleteCmsPage(String id) {
+        log.info("start to delete cmspage");
+        if (StringUtils.isNotEmpty(id)) {
+            CmsPage pageById = findPageById(id);
+            if (null != pageById) {
+                cmsPageRepository.delete(pageById);
+                return new ResponseResult(CommonCode.SUCCESS);
+            }
+        }
+        return new ResponseResult(CommonCode.FAIL);
+    }
+
+    /**
      * 新增页面
      *
      * @param cmsPage 新增页面
@@ -107,7 +159,7 @@ public class CmsPageService {
             }
             return new CmsPageResult(CommonCode.SUCCESS, newCmsPage);
         }
-
+        log.info("fail to save cmsPage , this cmsPage is exist");
         return new CmsPageResult(CommonCode.FAIL, null);
     }
 }

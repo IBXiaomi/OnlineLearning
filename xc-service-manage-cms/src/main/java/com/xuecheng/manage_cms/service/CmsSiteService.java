@@ -18,6 +18,11 @@ public class CmsSiteService {
     @Autowired
     private CmsSiteRepository cmsSiteRepository;
 
+    /**
+     * 查询所有的cms_site
+     *
+     * @return 返回查询结果
+     */
     public QueryResponseResult findAll() {
         List<CmsSite> cmsSites = cmsSiteRepository.findAll();
         QueryResult queryResult = new QueryResult();
@@ -26,6 +31,12 @@ public class CmsSiteService {
         return new QueryResponseResult(CommonCode.SUCCESS, queryResult);
     }
 
+    /**
+     * 根据id查询cms_site表
+     *
+     * @param id id
+     * @return 返回查询结果
+     */
     public QueryResponseResult findById(String id) {
         Optional<CmsSite> cmsSiteOptional = cmsSiteRepository.findById(id);
         CmsSite cmsSite = new CmsSite();

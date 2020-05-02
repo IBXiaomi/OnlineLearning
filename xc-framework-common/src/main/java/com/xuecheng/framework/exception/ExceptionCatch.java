@@ -23,7 +23,7 @@ public class ExceptionCatch {
     // 线程安全，且初始化后不可修改的map
     private static ImmutableMap<Class<? extends Throwable>, ResultCode> EXCEPTION;
 
-    protected static ImmutableMap.Builder<Class<? extends Throwable>, ResultCode> builder = ImmutableMap.builder();
+    private static ImmutableMap.Builder<Class<? extends Throwable>, ResultCode> builder = ImmutableMap.builder();
 
 
     static {
@@ -48,6 +48,7 @@ public class ExceptionCatch {
     /**
      * 对于未知异常的处理
      *
+     * @param exception 异常类
      * @return 响应结果
      */
     @ExceptionHandler(value = Exception.class)

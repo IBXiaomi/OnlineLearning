@@ -36,7 +36,6 @@ public class CmsPageController implements CmsPageControllerApi {
      */
     @GetMapping("/list/{page}/{size}")
     public QueryResponseResult findPage(@PathVariable("page") int page, @PathVariable("size") int size, QueryPageRequest queryPageRequest) {
-        log.info("start to findPage");
         // 此处的cmsPageService需要保证与dao中的对象同步加载,否则可能会有空指针异常，不能采用new对象的方式
         return cmsPageService.findPage(page, size, queryPageRequest);
     }

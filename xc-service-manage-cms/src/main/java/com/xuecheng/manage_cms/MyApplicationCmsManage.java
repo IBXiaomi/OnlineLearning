@@ -15,6 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EntityScan(" com.xuecheng.framework.domain.cms")
 @ComponentScan(basePackages = {"com.xuecheng.api"})
 @ComponentScan(basePackages = {"com.xuecheng.manage_cms"})
+@ComponentScan(basePackages = {"com.xuecheng.framework"})
 public class MyApplicationCmsManage {
     public static void main(String[] args) {
         SpringApplication.run(MyApplicationCmsManage.class, args);

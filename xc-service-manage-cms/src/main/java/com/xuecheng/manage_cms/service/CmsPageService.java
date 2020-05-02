@@ -2,7 +2,9 @@ package com.xuecheng.manage_cms.service;
 
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
+import com.xuecheng.framework.domain.cms.response.CmsCode;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
+import com.xuecheng.framework.exception.CustomExceptionFactory;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
@@ -98,21 +100,19 @@ public class CmsPageService {
         log.info("start to edit cmsPage");
         if (StringUtils.isNotEmpty(id)) {
             CmsPage pageById = findPageById(id);
-            if (null != cmsPage) {
-                pageById.setSiteId(cmsPage.getSiteId());
-                pageById.setPageAliase(cmsPage.getPageAliase());
-                pageById.setPageTemplate(cmsPage.getPageTemplate());
-                pageById.setPageName(cmsPage.getPageName());
-                pageById.setPageCreateTime(cmsPage.getPageCreateTime());
-                pageById.setPagePhysicalPath(cmsPage.getPagePhysicalPath());
-                pageById.setPageWebPath(cmsPage.getPageWebPath());
-                pageById.setPageType(cmsPage.getPageType());
-                cmsPageRepository.save(pageById);
-                return new CmsPageResult(CommonCode.SUCCESS, cmsPage);
-            } else {
-                log.error("cmsPage is null ,please check cmsPage information");
+            if(null == cmsPage){
+                CustomExceptionFactory.getCustomException(CmsCode.CMS_HTML_TEMPLATES_NULL);
             }
-
+            pageById.setSiteId(cmsPage.getSiteId());
+            pageById.setPageAliase(cmsPage.getPageAliase());
+            pageById.setPageTemplate(cmsPage.getPageTemplate());
+            pageById.setPageName(cmsPage.getPageName());
+            pageById.setPageCreateTime(cmsPage.getPageCreateTime());
+            pageById.setPagePhysicalPath(cmsPage.getPagePhysicalPath());
+            pageById.setPageWebPath(cmsPage.getPageWebPath());
+            pageById.setPageType(cmsPage.getPageType());
+            cmsPageRepository.save(pageById);
+            return new CmsPageResult(CommonCode.SUCCESS, cmsPage);
         } else {
             log.error("cmsPage id is null ,please check cmsPage id");
         }
@@ -145,22 +145,25 @@ public class CmsPageService {
      */
     public CmsPageResult addCmsPage(CmsPage cmsPage) {
         log.info("start to add cmsPage");
-
+        if (null == cmsPage) {
+            log.error("cmsPage params is null");
+            CustomExceptionFactory.getCustomException(CmsCode.CMS_ADD_PAGE_EXISTS_NAME);
+        }
         // 首先要根据前端传进来的数据查询数据库中是否存在数据
         CmsPage oldCmsPage = cmsPageRepository.findByPageNameAndSiteIdAndPageWebPath(cmsPage.getPageName(), cmsPage.getSiteId(), cmsPage.getPageWebPath());
-        if (null == oldCmsPage) {
-            // 保证页面id是数据库自己添加,自己增长
-            cmsPage.setPageId(null);
-            CmsPage newCmsPage = null;
-            try {
-                newCmsPage = cmsPageRepository.save(cmsPage);
-            } catch (Exception e) {
-                log.error("fail to save cmsPage {}", e.toString());
-            }
-            return new CmsPageResult(CommonCode.SUCCESS, newCmsPage);
+        if (null != oldCmsPage) {
+            log.error("this cmsPage is exist , please check params");
+            CustomExceptionFactory.getCustomException(CmsCode.CMS_ADD_PAGE_EXISTS_NAME);
         }
-        log.info("fail to save cmsPage , this cmsPage is exist");
-        return new CmsPageResult(CommonCode.FAIL, null);
+        // 保证页面id是数据库自己添加,自己增长
+        cmsPage.setPageId(null);
+        CmsPage newCmsPage = null;
+        try {
+            newCmsPage = cmsPageRepository.save(cmsPage);
+        } catch (Exception e) {
+            log.error("fail to save cmsPage {}", e.toString());
+        }
+        return new CmsPageResult(CommonCode.SUCCESS, newCmsPage);
     }
 }
 

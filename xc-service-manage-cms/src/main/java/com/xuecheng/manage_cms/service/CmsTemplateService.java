@@ -1,6 +1,7 @@
 package com.xuecheng.manage_cms.service;
 
 import com.xuecheng.framework.domain.cms.CmsTemplate;
+import com.xuecheng.framework.exception.CustomException;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
@@ -32,7 +33,7 @@ public class CmsTemplateService {
             queryResult.setList(cmsTemplates);
             queryResult.setTotal(cmsTemplates.size());
         } catch (Exception e) {
-            log.error("find all template is failed {}", e.toString());
+            log.error("find all template is failed {}", e.getMessage());
         }
         return new QueryResponseResult(CommonCode.SUCCESS, queryResult);
     }
@@ -48,7 +49,7 @@ public class CmsTemplateService {
         QueryResult queryResult = null;
         if (StringUtils.isEmpty(id)) {
             log.error("template id is null");
-            return new QueryResponseResult(CommonCode.FAIL, null);
+            throw new CustomException(CommonCode.CMS_PAGE_PARAMS);
         }
         try {
             Optional<CmsTemplate> cmsTemplateOptional = cmsTemplateRepository.findById(id);

@@ -6,7 +6,10 @@ import lombok.ToString;
 import java.util.Map;
 
 /**
- * Created by admin on 2018/2/6.
+ * cms_config集合中需要的cmsconfigmodel
+ *
+ * @author 吧嘻小米
+ * @date 2020/05/03
  */
 @Data
 @ToString

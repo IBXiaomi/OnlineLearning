@@ -7,9 +7,13 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017
       database: xc_cms
-#  devtools:
-#    restart:
-#      enabled: true #开启热部署
+
+  #  devtools:
+  #    restart:
+  #      enabled: true #开启热部署
 #  freemarker:
-#    cache: false #不加载缓存
+#    settings:
+#      template_update_delay: 0 #检查模板更新延迟时间，设置为0表示立即检查，如果时间大于0会有缓存不方便进行模板测试
+#      suffix: .ftl
+#      content-type: text/html
 

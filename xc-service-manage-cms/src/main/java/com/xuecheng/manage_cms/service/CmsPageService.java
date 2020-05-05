@@ -39,7 +39,7 @@ public class CmsPageService {
      * @param queryPageRequest 查询条件
      * @return 查询结果
      */
-    public QueryResponseResult findPage(int page, int size, QueryPageRequest queryPageRequest) {
+    public QueryResponseResult  findPage(int page, int size, QueryPageRequest queryPageRequest) {
         log.info("start to find cmsPage");
         // 初始化查询条件
         CmsPage cmsPage = new CmsPage();

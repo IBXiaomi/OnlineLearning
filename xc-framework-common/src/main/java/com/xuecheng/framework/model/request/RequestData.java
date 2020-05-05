@@ -4,7 +4,10 @@ import lombok.Data;
 import lombok.ToString;
 
 /**
- * Created by mrt on 2018/3/5.
+ * 条件查询的参数类
+ *
+ * @author 吧嘻小米
+ * @date 2020/05/05
  */
 @Data
 @ToString

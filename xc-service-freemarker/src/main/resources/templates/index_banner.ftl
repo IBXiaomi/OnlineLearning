@@ -18,6 +18,7 @@
     <#--        <div class="item" style="background-image: url(../img/widget-bannerA.jpg);"></div>-->
     <#--        <div class="item" style="background-image: url(../img/widget-banner3.png);"></div>-->
     <#--    </div>-->
+<#--    freemark静态化生成轮播图的地址-->
     <div class="banner-item">-->
         <#if model??>
             <#list model as item>

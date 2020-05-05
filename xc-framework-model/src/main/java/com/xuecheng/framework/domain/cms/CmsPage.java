@@ -87,7 +87,7 @@ public class CmsPage {
      */
     private String htmlFileId;
     /**
-     * 数据url
+     * 静态化页面需要的数据地址
      */
     private String dataUrl;
 

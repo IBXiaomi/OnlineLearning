@@ -46,7 +46,7 @@ public class CmsPageService {
         // withMatcher表示模糊匹配的方式，当前表示以pageAliase为模糊匹配项，匹配方式为包含
         ExampleMatcher exampleMatcher = ExampleMatcher.matching().withMatcher("pageAliase", ExampleMatcher.GenericPropertyMatchers.contains());
         if (null == queryPageRequest) {
-            queryPageRequest = new QueryPageRequest();
+            throw CustomExceptionFactory.getCustomException(CommonCode.CMS_PAGE_PARAMS);
         }
         // 不能使用(null!=queryPageRequest.getSiteId())来判断是否为空，!=判断的是内存地址，不是实际的值
         if (StringUtils.isNotEmpty(queryPageRequest.getSiteId())) {

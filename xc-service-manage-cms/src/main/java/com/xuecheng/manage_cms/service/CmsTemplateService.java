@@ -3,7 +3,6 @@ package com.xuecheng.manage_cms.service;
 import com.xuecheng.framework.domain.cms.CmsTemplate;
 import com.xuecheng.framework.domain.cms.request.QueryTemplateRequest;
 import com.xuecheng.framework.exception.CustomException;
-import com.xuecheng.framework.exception.CustomExceptionFactory;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
@@ -80,26 +79,27 @@ public class CmsTemplateService {
      * @return 返回查询结果
      */
     public QueryResponseResult findCmsTemplate(int page, int size, QueryTemplateRequest queryTemplateRequest) {
+        log.info("start to findCmsTemplate");
         CmsTemplate cmsTemplate = new CmsTemplate();
         ExampleMatcher exampleMatcher = ExampleMatcher.matching().withMatcher("templateName", ExampleMatcher.GenericPropertyMatchers.contains());
         if (null == queryTemplateRequest) {
-            throw CustomExceptionFactory.getCustomException(CommonCode.CMS_PAGE_PARAMS);
+            queryTemplateRequest = new QueryTemplateRequest();
         }
-        if(StringUtils.isNotEmpty(queryTemplateRequest.getTemplateFileId())){
-            cmsTemplate.setTemplateFileId(queryTemplateRequest.getTemplateFileId());
+        if (StringUtils.isNotEmpty(queryTemplateRequest.getTemplateFileId())) {
+            cmsTemplate.setTemplateId(queryTemplateRequest.getTemplateId());
         }
-        if(StringUtils.isNotEmpty(queryTemplateRequest.getTemplateName())){
+        if (StringUtils.isNotEmpty(queryTemplateRequest.getTemplateName())) {
             cmsTemplate.setTemplateName(queryTemplateRequest.getTemplateName());
         }
-        if (page < 0) {
+        // 默认从第一页开始查询
+        if (page <= 0) {
             page = 1;
         }
-        if (size < 0) {
+        if (size <= 0) {
             size = 10;
         }
         page = page - 1;
         Pageable pageable = PageRequest.of(page, size);
-//        Page<CmsTemplate> cmsTemplatePage = cmsTemplateRepository.findAll(pageable);
         Example<CmsTemplate> example = Example.of(cmsTemplate, exampleMatcher);
         Page<CmsTemplate> cmsTemplatePage = cmsTemplateRepository.findAll(example, pageable);
         List<CmsTemplate> cmsTemplateList = cmsTemplatePage.getContent();

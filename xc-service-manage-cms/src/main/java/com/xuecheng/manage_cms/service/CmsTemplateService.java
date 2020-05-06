@@ -2,7 +2,10 @@ package com.xuecheng.manage_cms.service;
 
 import com.xuecheng.framework.domain.cms.CmsTemplate;
 import com.xuecheng.framework.domain.cms.request.QueryTemplateRequest;
+import com.xuecheng.framework.domain.cms.response.code.CmsTemplateCode;
+import com.xuecheng.framework.domain.cms.response.result.CmsTemplateResult;
 import com.xuecheng.framework.exception.CustomException;
+import com.xuecheng.framework.exception.CustomExceptionFactory;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
@@ -108,6 +111,39 @@ public class CmsTemplateService {
         queryResult.setList(cmsTemplateList);
         queryResult.setTotal(totalElements);
         return new QueryResponseResult(CommonCode.SUCCESS, queryResult);
+    }
+
+    public CmsTemplateResult addCmsTemplate(CmsTemplate cmsTemplate) {
+        log.info("start to add cmsTemplate");
+        if (null == cmsTemplate) {
+            throw CustomExceptionFactory.getCustomException(CommonCode.CMS_PAGE_PARAMS);
+        }
+        if (StringUtils.isEmpty(cmsTemplate.getTemplateFileId()) || StringUtils.isEmpty(cmsTemplate.getTemplateName())) {
+            throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_PARAMTERS);
+        }
+        // 根据templateFileId和templateName判断当前模板是否存在
+        CmsTemplate findCmsTemplate = cmsTemplateRepository.findCmsTemplateByTemplateFileIdAndTemplateName(cmsTemplate.getTemplateFileId(), cmsTemplate.getTemplateName());
+        if (null != findCmsTemplate) {
+            log.error("this template is exist , please check parameters");
+            throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_EXIST);
+        }
+        cmsTemplate.setTemplateId(null);
+        CmsTemplate newCmsTemplate = cmsTemplateRepository.save(cmsTemplate);
+        // 需要将模板存储到mongoDB自带的文件存储中
+        return new CmsTemplateResult(CmsTemplateCode.CMS_TEMPLATE_ADD_SUCCESS, newCmsTemplate);
+    }
+
+
+    private Boolean saveCmsTemplateToMongoDB() {
+        return null;
+    }
+
+    /**
+     * 页面预览
+     */
+    public void getHtmlPreView() {
 
     }
+
+
 }

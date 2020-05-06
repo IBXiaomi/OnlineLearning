@@ -10,4 +10,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  * @date 2020/04/28
  */
 public interface CmsTemplateRepository extends MongoRepository<CmsTemplate, String> {
+
+
+    CmsTemplate findCmsTemplateByTemplateFileIdAndTemplateName(String templateFileId, String templateName);
 }

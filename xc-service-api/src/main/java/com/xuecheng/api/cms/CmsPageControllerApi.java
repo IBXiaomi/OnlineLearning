@@ -29,7 +29,8 @@ public interface CmsPageControllerApi {
     @ApiOperation(value = "分页查询列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页码", paramType = "path", required = true, dataType = "int"),
-            @ApiImplicitParam(name = "size", value = "每页显示的数量", paramType = "path", required = true, dataType = "int")
+            @ApiImplicitParam(name = "size", value = "每页显示的数量", paramType = "path", required = true, dataType = "int"),
+            @ApiImplicitParam(name = "queryPageRequest", value = "查询条件", paramType = "path", required = false, dataType = "object")
     })
     QueryResponseResult findPage(int page, int size, QueryPageRequest queryPageRequest);
 

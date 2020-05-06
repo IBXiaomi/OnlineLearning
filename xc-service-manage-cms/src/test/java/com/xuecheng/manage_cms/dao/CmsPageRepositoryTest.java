@@ -120,4 +120,11 @@ public class CmsPageRepositoryTest {
             System.out.println(cmsPage1);
         }
     }
+
+    /**
+     * 测试页面静态化
+     */
+    public void testGetHtml(){
+
+    }
 }

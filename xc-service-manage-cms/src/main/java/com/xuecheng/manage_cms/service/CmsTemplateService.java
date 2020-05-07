@@ -15,8 +15,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -143,6 +146,51 @@ public class CmsTemplateService {
      */
     public void getHtmlPreView() {
 
+    }
+
+    /**
+     * 上传模板文件
+     *
+     * @param multipartFile 模板文件
+     * @return 返回上传结果
+     */
+    public CmsTemplateResult uploadTemplateFile(MultipartFile multipartFile) {
+        log.info("start to upload template file");
+        InputStream inputStream = null;
+        OutputStream outputStream = null;
+        CmsTemplate cmsTemplate = null;
+        try {
+            if (null == multipartFile) {
+                throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_FILE_NULL);
+            }
+            String fileName = multipartFile.getOriginalFilename();
+            String suffix = fileName.substring(fileName.lastIndexOf('.'));
+            String dest = "E:/TEST/";
+            File newFile = new File(dest + new Date().getTime() + suffix);
+            if (!newFile.exists()) {
+                newFile.createNewFile();
+            }
+            byte[] bytes = multipartFile.getBytes();
+            inputStream = new ByteArrayInputStream(bytes);
+            outputStream = new FileOutputStream(newFile);
+            byte[] data = new byte[1024];
+            int len = 0;
+            while ((len = (inputStream.read())) != -1) {
+                log.info("begin write file to target dest");
+                outputStream.write(data, 0, len);
+            }
+            return new CmsTemplateResult(CmsTemplateCode.CMS_TEMPLATE_FILE_UPLOAD_SUCCESS, cmsTemplate);
+        } catch (IOException e) {
+            log.error("file upload error {}", e.getMessage());
+        } finally {
+            try {
+                inputStream.close();
+                outputStream.close();
+            } catch (IOException e) {
+                log.error("close stream error,file upload error", e.getMessage());
+            }
+        }
+        return null;
     }
 
 

@@ -3,11 +3,13 @@ package com.xuecheng.api.cms;
 import com.xuecheng.framework.domain.cms.CmsTemplate;
 import com.xuecheng.framework.domain.cms.request.QueryTemplateRequest;
 import com.xuecheng.framework.domain.cms.response.CmsPageResult;
+import com.xuecheng.framework.domain.cms.response.result.CmsTemplateResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 页面模板接口
@@ -64,4 +66,11 @@ public interface CmsTemplateControllerApi {
      */
     @ApiOperation(value = "页面模板预览接口")
     void getPreViewHtml();
+
+    /**
+     * 上传模板文件接口
+     *
+     * @return 上传结果
+     */
+    CmsTemplateResult uploadTemplateFile(MultipartFile multipartFile);
 }

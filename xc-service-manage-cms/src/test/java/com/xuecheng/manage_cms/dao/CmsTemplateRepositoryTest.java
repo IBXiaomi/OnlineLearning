@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,7 +35,6 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @Slf4j
 public class CmsTemplateRepositoryTest {
-
 
 
     @Autowired
@@ -115,6 +115,19 @@ public class CmsTemplateRepositoryTest {
         // 获取流中的对象
         String string = IOUtils.toString(gridFsResource.getInputStream(), "UTF-8");
         System.out.println(string);
+    }
+
+    @Test
+    public void createNewFile() {
+        try {
+            String path = "E:/TEST";
+            File file = new File(path + new Date().getTime()+".txt");
+            if(!file.exists()){
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

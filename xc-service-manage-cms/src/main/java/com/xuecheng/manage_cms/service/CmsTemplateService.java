@@ -12,8 +12,10 @@ import com.xuecheng.framework.model.response.QueryResult;
 import com.xuecheng.manage_cms.dao.CmsTemplateRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +30,9 @@ import java.util.Optional;
 public class CmsTemplateService {
     @Autowired
     private CmsTemplateRepository cmsTemplateRepository;
+
+    @Autowired
+    GridFsTemplate gridFsTemplate;
 
     /**
      * 查询所有的cms_template
@@ -136,8 +141,22 @@ public class CmsTemplateService {
         return new CmsTemplateResult(CmsTemplateCode.CMS_TEMPLATE_ADD_SUCCESS, newCmsTemplate);
     }
 
-
+    /**
+     * 将模板文件保存在mongodb中
+     *
+     * @return 返回保存结果
+     */
     private Boolean saveCmsTemplateToMongoDB() {
+        // 创建文件
+        try {
+            File file = new File("/");
+            if (file.exists()) {
+                ObjectId objectId = gridFsTemplate.store(new FileInputStream(file), "index_banner.ftl");
+                log.error("create objectId is " + objectId);
+            }
+        } catch (FileNotFoundException e) {
+            log.error("file is not exist {}", e.getMessage());
+        }
         return null;
     }
 
@@ -163,16 +182,10 @@ public class CmsTemplateService {
             if (null == multipartFile) {
                 throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_FILE_NULL);
             }
-            String fileName = multipartFile.getOriginalFilename();
-            String suffix = fileName.substring(fileName.lastIndexOf('.'));
-            String dest = "E:/TEST/";
-            File newFile = new File(dest + new Date().getTime() + suffix);
-            if (!newFile.exists()) {
-                newFile.createNewFile();
-            }
-            byte[] bytes = multipartFile.getBytes();
-            inputStream = new ByteArrayInputStream(bytes);
-            outputStream = new FileOutputStream(newFile);
+            File file = handleMultipartFile(multipartFile);
+            log.error("multipartFile size " + multipartFile.getSize());
+            inputStream = multipartFile.getInputStream();
+            outputStream = new FileOutputStream(file);
             byte[] data = new byte[1024];
             int len = 0;
             while ((len = (inputStream.read())) != -1) {
@@ -187,11 +200,43 @@ public class CmsTemplateService {
                 inputStream.close();
                 outputStream.close();
             } catch (IOException e) {
-                log.error("close stream error,file upload error", e.getMessage());
+                log.error("close stream error,file upload error {}", e.getMessage());
             }
         }
         return null;
     }
 
-
+    /**
+     * 处理文件
+     *
+     * @param multipartFile 传递的文件
+     * @return 返回处理的文件
+     */
+    private File handleMultipartFile(MultipartFile multipartFile) {
+        log.info("start to handle file");
+        try {
+            String fileName = multipartFile.getOriginalFilename();
+            String suffix = fileName.substring(fileName.lastIndexOf('.'));
+            String dest = "E:/TEST/";
+            File newFile = new File(dest + new Date().getTime() + suffix);
+            File parentFile = newFile.getParentFile();
+            if (!parentFile.exists() || parentFile.isDirectory()) {
+                parentFile.mkdirs();
+            }
+            if (!newFile.exists()) {
+                boolean newFileResult = newFile.createNewFile();
+                if (newFileResult) {
+                    log.info("create file success");
+                    return newFile;
+                } else {
+                    log.info("create file failed");
+                    return new File(dest);
+                }
+            }
+        } catch (IOException e) {
+            log.error("handleMultipartFile failed {}", e.getMessage());
+        }
+        // 需要优化
+        return null;
+    }
 }

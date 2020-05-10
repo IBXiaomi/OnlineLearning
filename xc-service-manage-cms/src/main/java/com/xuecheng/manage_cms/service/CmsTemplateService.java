@@ -9,6 +9,7 @@ import com.xuecheng.framework.exception.CustomExceptionFactory;
 import com.xuecheng.framework.model.response.CommonCode;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import com.xuecheng.framework.model.response.QueryResult;
+import com.xuecheng.framework.web.BaseController;
 import com.xuecheng.manage_cms.dao.CmsTemplateRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -20,14 +21,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
-public class CmsTemplateService {
+public class CmsTemplateService extends BaseController {
+    private static Map<ObjectId, String> objectIdMap = new HashMap<>();
+
+
     @Autowired
     private CmsTemplateRepository cmsTemplateRepository;
 
@@ -121,24 +122,36 @@ public class CmsTemplateService {
         return new QueryResponseResult(CommonCode.SUCCESS, queryResult);
     }
 
-    public CmsTemplateResult addCmsTemplate(CmsTemplate cmsTemplate) {
-        log.info("start to add cmsTemplate");
-        if (null == cmsTemplate) {
-            throw CustomExceptionFactory.getCustomException(CommonCode.CMS_PAGE_PARAMS);
-        }
-        if (StringUtils.isEmpty(cmsTemplate.getTemplateFileId()) || StringUtils.isEmpty(cmsTemplate.getTemplateName())) {
-            throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_PARAMTERS);
-        }
-        // 根据templateFileId和templateName判断当前模板是否存在
-        CmsTemplate findCmsTemplate = cmsTemplateRepository.findCmsTemplateByTemplateFileIdAndTemplateName(cmsTemplate.getTemplateFileId(), cmsTemplate.getTemplateName());
-        if (null != findCmsTemplate) {
-            log.error("this template is exist , please check parameters");
-            throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_EXIST);
-        }
-        cmsTemplate.setTemplateId(null);
-        CmsTemplate newCmsTemplate = cmsTemplateRepository.save(cmsTemplate);
-        // 需要将模板存储到mongoDB自带的文件存储中
-        return new CmsTemplateResult(CmsTemplateCode.CMS_TEMPLATE_ADD_SUCCESS, newCmsTemplate);
+    /**
+     * 新增模板
+     *
+     * @param cmsTemplate 模板参数
+     * @return 新增结果
+     */
+    public CmsTemplateResult addCmsTemplate(MultipartFile multipartFile) {
+        log.error("start to add cmsTemplate");
+//        if (null == cmsTemplate) {
+//            throw CustomExceptionFactory.getCustomException(CommonCode.CMS_PAGE_PARAMS);
+//        }
+//        if (StringUtils.isEmpty(cmsTemplate.getTemplateFileId()) || StringUtils.isEmpty(cmsTemplate.getTemplateName())) {
+//            throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_PARAMTERS);
+//        }
+//        // 根据templateFileId和templateName判断当前模板是否存在
+//        CmsTemplate findCmsTemplate = cmsTemplateRepository.findCmsTemplateByTemplateFileIdAndTemplateName(cmsTemplate.getTemplateFileId(), cmsTemplate.getTemplateName());
+//        if (null != findCmsTemplate) {
+//            log.error("this template is exist , please check parameters");
+//            throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_EXIST);
+//        }
+////        if (null == multipartFile) {
+////            throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_FILE_NULL);
+////        }
+////        ObjectId objectId = saveCmsTemplateToMongoDB(multipartFile);
+//        // cmsTemplate.setTemplateFileId(objectId.toString());
+//        //cmsTemplate.setTemplateId(null);
+//        CmsTemplate newCmsTemplate = cmsTemplateRepository.save(cmsTemplate);
+//        // 需要将模板存储到mongoDB自带的文件存储中
+//        return new CmsTemplateResult(CmsTemplateCode.CMS_TEMPLATE_ADD_SUCCESS, newCmsTemplate);
+        return null;
     }
 
     /**
@@ -146,26 +159,24 @@ public class CmsTemplateService {
      *
      * @return 返回保存结果
      */
-    private Boolean saveCmsTemplateToMongoDB() {
+    private ObjectId saveCmsTemplateToMongoDB(MultipartFile multipartFile) {
+        log.info("begin to save file to mongoDB");
+        File file = handleMultipartFile(multipartFile);
         // 创建文件
         try {
-            File file = new File("/");
-            if (file.exists()) {
-                ObjectId objectId = gridFsTemplate.store(new FileInputStream(file), "index_banner.ftl");
+            if (null != multipartFile) {
+                ObjectId objectId = gridFsTemplate.store(new FileInputStream(file), multipartFile.getOriginalFilename());
+                objectIdMap.put(objectId, multipartFile.getOriginalFilename());
                 log.error("create objectId is " + objectId);
+                return objectId;
             }
         } catch (FileNotFoundException e) {
             log.error("file is not exist {}", e.getMessage());
+            throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_FILE_STORE_FAILED);
         }
         return null;
     }
 
-    /**
-     * 页面预览
-     */
-    public void getHtmlPreView() {
-
-    }
 
     /**
      * 上传模板文件
@@ -173,11 +184,12 @@ public class CmsTemplateService {
      * @param multipartFile 模板文件
      * @return 返回上传结果
      */
-    public CmsTemplateResult uploadTemplateFile(MultipartFile multipartFile) {
+    public CmsTemplateResult uploadTemplateFile(MultipartFile multipartFile, CmsTemplate cmsTemplate) {
+        log.info("multipartFile***" + multipartFile + "cmsTemplate****" + cmsTemplate);
         log.info("start to upload template file");
         InputStream inputStream = null;
         OutputStream outputStream = null;
-        CmsTemplate cmsTemplate = null;
+
         try {
             if (null == multipartFile) {
                 throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_FILE_NULL);
@@ -190,7 +202,7 @@ public class CmsTemplateService {
             int len = 0;
             while ((len = (inputStream.read())) != -1) {
                 log.info("begin write file to target dest");
-                outputStream.write(data, 0, len);
+                outputStream.write(data);
             }
             return new CmsTemplateResult(CmsTemplateCode.CMS_TEMPLATE_FILE_UPLOAD_SUCCESS, cmsTemplate);
         } catch (IOException e) {
@@ -214,6 +226,7 @@ public class CmsTemplateService {
      */
     private File handleMultipartFile(MultipartFile multipartFile) {
         log.info("start to handle file");
+        String nullFile = "";
         try {
             String fileName = multipartFile.getOriginalFilename();
             String suffix = fileName.substring(fileName.lastIndexOf('.'));
@@ -230,13 +243,14 @@ public class CmsTemplateService {
                     return newFile;
                 } else {
                     log.info("create file failed");
-                    return new File(dest);
+                    return new File(nullFile);
                 }
             }
         } catch (IOException e) {
             log.error("handleMultipartFile failed {}", e.getMessage());
         }
         // 需要优化
-        return null;
+        return new File(nullFile);
     }
+
 }

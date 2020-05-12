@@ -128,30 +128,28 @@ public class CmsTemplateService extends BaseController {
      * @param cmsTemplate 模板参数
      * @return 新增结果
      */
-    public CmsTemplateResult addCmsTemplate(MultipartFile multipartFile) {
+    public CmsTemplateResult addCmsTemplate(CmsTemplate cmsTemplate) {
         log.error("start to add cmsTemplate");
-//        if (null == cmsTemplate) {
-//            throw CustomExceptionFactory.getCustomException(CommonCode.CMS_PAGE_PARAMS);
-//        }
-//        if (StringUtils.isEmpty(cmsTemplate.getTemplateFileId()) || StringUtils.isEmpty(cmsTemplate.getTemplateName())) {
-//            throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_PARAMTERS);
-//        }
-//        // 根据templateFileId和templateName判断当前模板是否存在
-//        CmsTemplate findCmsTemplate = cmsTemplateRepository.findCmsTemplateByTemplateFileIdAndTemplateName(cmsTemplate.getTemplateFileId(), cmsTemplate.getTemplateName());
-//        if (null != findCmsTemplate) {
-//            log.error("this template is exist , please check parameters");
-//            throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_EXIST);
-//        }
-////        if (null == multipartFile) {
-////            throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_FILE_NULL);
-////        }
-////        ObjectId objectId = saveCmsTemplateToMongoDB(multipartFile);
-//        // cmsTemplate.setTemplateFileId(objectId.toString());
-//        //cmsTemplate.setTemplateId(null);
-//        CmsTemplate newCmsTemplate = cmsTemplateRepository.save(cmsTemplate);
-//        // 需要将模板存储到mongoDB自带的文件存储中
-//        return new CmsTemplateResult(CmsTemplateCode.CMS_TEMPLATE_ADD_SUCCESS, newCmsTemplate);
-        return null;
+        if (null == cmsTemplate) {
+            throw CustomExceptionFactory.getCustomException(CommonCode.CMS_PAGE_PARAMS);
+        }
+        if (StringUtils.isEmpty(cmsTemplate.getTemplateFileId()) || StringUtils.isEmpty(cmsTemplate.getTemplateName())) {
+            throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_PARAMTERS);
+        }
+        // 根据templateFileId和templateName判断当前模板是否存在
+        CmsTemplate findCmsTemplate = cmsTemplateRepository.findCmsTemplateByTemplateFileIdAndTemplateName(cmsTemplate.getTemplateFileId(), cmsTemplate.getTemplateName());
+        if (null != findCmsTemplate) {
+            log.error("this template is exist , please check parameters");
+            throw CustomExceptionFactory.getCustomException(CmsTemplateCode.CMS_TEMPLATE_EXIST);
+        }
+
+        // ObjectId objectId = saveCmsTemplateToMongoDB(multipartFile);
+        //cmsTemplate.setTemplateFileId(objectId.toString());
+        cmsTemplate.setTemplateId(null);
+        CmsTemplate newCmsTemplate = cmsTemplateRepository.save(cmsTemplate);
+        // 需要将模板存储到mongoDB自带的文件存储中
+        return new CmsTemplateResult(CmsTemplateCode.CMS_TEMPLATE_ADD_SUCCESS, newCmsTemplate);
+
     }
 
     /**

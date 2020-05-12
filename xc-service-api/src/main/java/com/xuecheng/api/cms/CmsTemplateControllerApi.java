@@ -2,7 +2,6 @@ package com.xuecheng.api.cms;
 
 import com.xuecheng.framework.domain.cms.CmsTemplate;
 import com.xuecheng.framework.domain.cms.request.QueryTemplateRequest;
-import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.domain.cms.response.result.CmsTemplateResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
 import io.swagger.annotations.Api;
@@ -58,19 +57,17 @@ public interface CmsTemplateControllerApi {
      * @return 返回插入页面结果
      */
     @ApiOperation(value = "新增页面")
-    @ApiImplicitParam(name = "cmsTemplate", value = "新增页面模板信息", paramType = "path", required = true, dataType = "object")
-    CmsPageResult addCmsTemplatePage(CmsTemplate cmsTemplate);
+    @ApiImplicitParams(
+            {@ApiImplicitParam(name = "cmsTemplate", value = "新增页面模板信息", paramType = "path", required = true, dataType = "object"),
+            @ApiImplicitParam(name = "multipartFile", value = "模板文件", paramType = "path", required = true, dataType = "object")
+    })
+    CmsTemplateResult addCmsTemplatePage(MultipartFile multipartFile);
 
-    /**
-     * 页面模板预览接口
-     */
-    @ApiOperation(value = "页面模板预览接口")
-    void getPreViewHtml();
 
     /**
      * 上传模板文件接口
      *
      * @return 上传结果
      */
-    CmsTemplateResult uploadTemplateFile(MultipartFile multipartFile);
+    CmsTemplateResult uploadTemplateFile(MultipartFile multipartFile,CmsTemplate cmsTemplate);
 }

@@ -3,9 +3,9 @@ package com.xuecheng.manage_cms.controller;
 import com.xuecheng.api.cms.CmsTemplateControllerApi;
 import com.xuecheng.framework.domain.cms.CmsTemplate;
 import com.xuecheng.framework.domain.cms.request.QueryTemplateRequest;
-import com.xuecheng.framework.domain.cms.response.CmsPageResult;
 import com.xuecheng.framework.domain.cms.response.result.CmsTemplateResult;
 import com.xuecheng.framework.model.response.QueryResponseResult;
+import com.xuecheng.framework.web.BaseController;
 import com.xuecheng.manage_cms.service.CmsTemplateService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/cms/page/template")
 @Slf4j
-public class CmsTemplateController implements CmsTemplateControllerApi {
+public class CmsTemplateController extends BaseController implements CmsTemplateControllerApi {
 
 
     @Autowired
@@ -43,20 +43,15 @@ public class CmsTemplateController implements CmsTemplateControllerApi {
 
     @Override
     @PostMapping("/add")
-    public CmsPageResult addCmsTemplatePage(CmsTemplate cmsTemplate) {
-        return null;
+    public CmsTemplateResult addCmsTemplatePage( MultipartFile multipartFile) {
+        return cmsTemplateService.addCmsTemplate(multipartFile);
     }
 
-    @Override
-    @GetMapping("/getHtmlPreView")
-    public void getPreViewHtml() {
-        cmsTemplateService.getHtmlPreView();
-    }
 
     @Override
     @PostMapping("/upload")
-    public CmsTemplateResult uploadTemplateFile(@RequestParam("file") MultipartFile multipartFile) {
-        return cmsTemplateService.uploadTemplateFile(multipartFile);
+    public CmsTemplateResult uploadTemplateFile(@RequestParam("file") MultipartFile file, CmsTemplate cmsTemplate) {
+        return cmsTemplateService.uploadTemplateFile(file,cmsTemplate);
     }
 
 

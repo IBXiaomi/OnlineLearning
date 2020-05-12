@@ -15,7 +15,9 @@ public enum CmsTemplateCode implements ResultCode {
     CMS_TEMPLATE_ADD_SUCCESS(true, 12123, "模板新增成功"),
     CMS_TEMPLATE_FILE_NULL(false, 12124, "模板文件为空"),
     CMS_TEMPLATE_FILE_UPLOAD_SUCCESS(true, 12125, "模板文件上传成功"),
-    CMS_TEMPLATE_FILE_UPLOAD_FAILED(false, 12126, "模板文件上传失败");
+    CMS_TEMPLATE_FILE_UPLOAD_FAILED(false, 12126, "模板文件上传失败"),
+    CMS_TEMPLATE_FILE_STORE_FAILED(false, 12126, "模板文件上传失败");
+
 
     //操作代码
     boolean success;

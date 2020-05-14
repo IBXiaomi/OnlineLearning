@@ -31,14 +31,20 @@ public class RabbitMQConsumer {
              * String queue 队列名称, boolean durable 是否持久化, boolean exclusive 是否独占, boolean autoDelete, Map<String, Object> arguments
              */
             // 获取交换机
-            channel.exchangeDeclare("log", "direct");
-            String queueName = channel.queueDeclare().getQueue();
+            //channel.exchangeDeclare("log", "direct");
+            //String queueName = channel.queueDeclare().getQueue();
             // 绑定交换机和队列
-            channel.queueBind(queueName, "log", "");
+            //channel.queueBind(queueName, "log", "");
             // 声明队列
-            channel.queueDeclare(QUEUE, false, false, true, null);
-            DefaultConsumer defaultConsumer = new DefaultConsumer(channel);
-            channel.basicConsume("QUEUE", defaultConsumer);
+            channel.queueDeclare(QUEUE, true, false, false, null);
+            DefaultConsumer defaultConsumer = new DefaultConsumer(channel) {
+                @Override
+                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                    String message = new String(body, "utf-8");
+                    System.out.println(message);
+                }
+            };
+            channel.basicConsume(QUEUE, true, defaultConsumer);
             //log.info("start to consuming:" + message);
 
         } catch (IOException e) {

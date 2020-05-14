@@ -18,7 +18,7 @@ import java.util.concurrent.TimeoutException;
 public class RabbitMQProducer {
     private static final String QUEUE = "baxixiaomi";
 
-    private static final String MESSAGE = "hello baxixiaomi";
+    private static final String MESSAGE = "hello-baxixiaomi";
 
     public static void main(String[] args) {
 
@@ -35,16 +35,16 @@ public class RabbitMQProducer {
             /**
              * String queue 队列名称, boolean durable 是否持久化, boolean exclusive 是否独占, boolean autoDelete, Map<String, Object> arguments
              */
-            channel.queueDeclare(QUEUE, false, false, true, null);
+            channel.queueDeclare(QUEUE, true, false, false, null);
             /**
              * String exchange 交换机, String routingKey, BasicProperties props, byte[] body
              */
-            channel.exchangeDeclare("log", "direct");
-            channel.basicPublish("log", "log_queue", null, MESSAGE.getBytes());
+            //channel.exchangeDeclare("log", "direct");
+            channel.basicPublish("", QUEUE, null, MESSAGE.getBytes());
             //log.info("start to producer message:" + MESSAGE);
             System.out.println("start to producer message:" + MESSAGE);
         } catch (IOException e) {
-           // log.error("create connection failed {}", e.getMessage());
+            // log.error("create connection failed {}", e.getMessage());
         } catch (TimeoutException e) {
             //log.error("create channel failed {}", e.getMessage());
         }

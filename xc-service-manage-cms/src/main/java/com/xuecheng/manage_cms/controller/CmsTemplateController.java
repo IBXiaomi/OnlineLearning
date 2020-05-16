@@ -43,8 +43,8 @@ public class CmsTemplateController extends BaseController implements CmsTemplate
 
     @Override
     @PostMapping("/add")
-    public CmsTemplateResult addCmsTemplatePage( MultipartFile multipartFile) {
-        return cmsTemplateService.addCmsTemplate(multipartFile);
+    public CmsTemplateResult addCmsTemplatePage( CmsTemplate cmsTemplate) {
+        return cmsTemplateService.addCmsTemplate(cmsTemplate);
     }
 
 

@@ -36,6 +36,7 @@
         <mysql-connector-java.version>5.1.40</mysql-connector-java.version>
         <elasticsearch.version>6.2.1</elasticsearch.version>
         <guava.version>26.0-jre</guava.version>
+        <rabbitmq.vresion>5.7.3</rabbitmq.vresion>
     </properties>
     <!--test-->
     <dependencyManagement>
@@ -153,6 +154,12 @@
                 <groupId>org.mongodb</groupId>
                 <artifactId>mongo-java-driver</artifactId>
                 <version>3.11.2</version>
+            </dependency>
+            <!--原生mq-->
+            <dependency>
+                <groupId>com.rabbitmq</groupId>
+                <artifactId>amqp-client</artifactId>
+                <version>${rabbitmq.vresion}</version>
             </dependency>
 <!--            <dependency>-->
 <!--                <groupId>org.springframework.boot</groupId>-->

@@ -59,9 +59,9 @@ public interface CmsTemplateControllerApi {
     @ApiOperation(value = "新增页面")
     @ApiImplicitParams(
             {@ApiImplicitParam(name = "cmsTemplate", value = "新增页面模板信息", paramType = "path", required = true, dataType = "object"),
-            @ApiImplicitParam(name = "multipartFile", value = "模板文件", paramType = "path", required = true, dataType = "object")
-    })
-    CmsTemplateResult addCmsTemplatePage(MultipartFile multipartFile);
+                    @ApiImplicitParam(name = "multipartFile", value = "模板文件", paramType = "path", required = true, dataType = "object")
+            })
+    CmsTemplateResult addCmsTemplatePage(CmsTemplate cmsTemplate);
 
 
     /**
@@ -69,5 +69,5 @@ public interface CmsTemplateControllerApi {
      *
      * @return 上传结果
      */
-    CmsTemplateResult uploadTemplateFile(MultipartFile multipartFile,CmsTemplate cmsTemplate);
+    CmsTemplateResult uploadTemplateFile(MultipartFile multipartFile, CmsTemplate cmsTemplate);
 }

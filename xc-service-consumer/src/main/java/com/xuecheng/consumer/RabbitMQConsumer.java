@@ -1,6 +1,7 @@
 package com.xuecheng.consumer;
 
 import com.rabbitmq.client.*;
+import com.xuecheng.framework.rabbitMQConnection.CreateMQConnection;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -19,14 +20,7 @@ public class RabbitMQConsumer {
     public static void main(String[] args) {
         try {
             // 设置连接，创建通道
-            ConnectionFactory connectionFactory = new ConnectionFactory();
-            connectionFactory.setHost("192.168.200.131");
-            connectionFactory.setPort(5672);
-            connectionFactory.setUsername("wjw");
-            connectionFactory.setPassword("wjw");
-            connectionFactory.setVirtualHost("/");
-            Connection connection = connectionFactory.newConnection();
-            Channel channel = connection.createChannel();
+            Channel channel = CreateMQConnection.createConnection();
             /**
              * String queue 队列名称, boolean durable 是否持久化, boolean exclusive 是否独占, boolean autoDelete, Map<String, Object> arguments
              */

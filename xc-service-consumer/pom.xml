@@ -13,9 +13,13 @@
     <artifactId>xc-service-consumer</artifactId>
     <dependencies>
         <dependency>
+            <groupId>com.xuecheng</groupId>
+            <artifactId>xc-framework-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>com.rabbitmq</groupId>
             <artifactId>amqp-client</artifactId>
-            <version>5.7.3</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

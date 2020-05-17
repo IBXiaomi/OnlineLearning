@@ -5,8 +5,7 @@ import com.xuecheng.producer.RabbitMQProducerType;
 
 public class RabbitMQProducerTest {
 
-
     public static void main(String[] args) {
-        RabbitMQProducerType.getRabbitMQProducer(RabbitMQConstant.DEFAULT_TYPE).createProducer(RabbitMQConstant.DEFAULT_TYPE);
+        RabbitMQProducerType.getRabbitMQProducer(RabbitMQConstant.HEADER_TYPE).createProducer(RabbitMQConstant.HEADER_TYPE);
     }
 }

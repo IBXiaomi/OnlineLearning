@@ -1,4 +1,4 @@
-package com.xuecheng.consumer;
+package com.xuecheng.consumer.demo;
 
 /**
  * 构造不同的consumer

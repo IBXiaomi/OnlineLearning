@@ -40,5 +40,21 @@ public interface RabbitMQConstant extends Constant {
     /**
      * topic模式
      */
-    String TYPIC_TYPE = "topic";
+    String TOPIC_TYPE = "topic";
+
+    /**
+     * header模式
+     */
+    String HEADER_TYPE = "headers";
+
+    interface TopicConstant {
+
+        String MESSAGE = "hello-baxixiaomi";
+
+        String TOPIC_EXCHANGE_NAME = "TOPIC_LOG";
+
+        String TOPIC_QUEUE_EMAIL = "TOPIC_QUEUE_EMAIL";
+
+        String TOPIC_QUEUE_SMS = "TOPIC_QUEUE_SMS";
+    }
 }

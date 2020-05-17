@@ -1,9 +1,10 @@
 package com.xuecheng.producer;
 
 import com.xuecheng.framework.baseConstant.RabbitMQConstant;
-import com.xuecheng.producer.impl.producer.RabbitMQDefaultProducer;
-import com.xuecheng.producer.impl.producer.RabbitMQFanoutProducer;
-import com.xuecheng.producer.impl.producer.RabbitMQTypicProducer;
+import com.xuecheng.producer.demo.impl.RabbitMQDefaultProducer;
+import com.xuecheng.producer.demo.impl.RabbitMQFanoutProducer;
+import com.xuecheng.producer.demo.impl.RabbitMQHeaderProducer;
+import com.xuecheng.producer.demo.impl.RabbitMQTypicProducer;
 
 /**
  * rabbitmq的不同producer
@@ -22,8 +23,10 @@ public class RabbitMQProducerType {
                     .FANOUT_TYPE:
                 return new RabbitMQFanoutProducer();
             case RabbitMQConstant
-                    .TYPIC_TYPE:
+                    .TOPIC_TYPE:
                 return new RabbitMQTypicProducer();
+            case RabbitMQConstant.HEADER_TYPE:
+                return new RabbitMQHeaderProducer();
             default:
                 return new RabbitMQDefaultProducer();
         }

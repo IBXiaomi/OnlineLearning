@@ -20,6 +20,9 @@ public class RabbitMQFanoutConsumer implements RabbitMQConsumer {
 
     private static final String EXCHANGE_NAME = "LOG";
 
+    private static final String EXCHANGE_QUEUE_SMS = "SMS";
+
+    private static final String EXCHANGE_QUEUE_EMAIL = "EMAIL";
 
     /**
      * fanout发布/订阅模式
@@ -29,9 +32,15 @@ public class RabbitMQFanoutConsumer implements RabbitMQConsumer {
     public void createConsumer(String type) {
         try {
             Channel channel = CreateMQConnection.getChannel();
-            String queueName = channel.queueDeclare().getQueue();
-            channel.queueBind(queueName, EXCHANGE_NAME, "");
-            channel.basicConsume(queueName, true, fanoutConsumer(channel));
+            channel.exchangeDeclare(EXCHANGE_NAME,type);
+            // 声明队列
+            channel.queueDeclare(EXCHANGE_QUEUE_SMS, true, false, false, null);
+            channel.queueDeclare(EXCHANGE_QUEUE_EMAIL, true, false, false, null);
+            // 绑定队列和交换机
+            channel.queueBind(EXCHANGE_QUEUE_SMS, EXCHANGE_NAME, "");
+            channel.queueBind(EXCHANGE_QUEUE_EMAIL, EXCHANGE_NAME, "");
+            channel.basicConsume(EXCHANGE_QUEUE_SMS, true, fanoutConsumer(channel));
+            channel.basicConsume(EXCHANGE_QUEUE_EMAIL, true, fanoutConsumer(channel));
         } catch (IOException e) {
 
         }

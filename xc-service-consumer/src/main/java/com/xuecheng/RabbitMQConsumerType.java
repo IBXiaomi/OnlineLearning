@@ -23,7 +23,7 @@ public class RabbitMQConsumerType {
                     .FANOUT_TYPE:
                 return new RabbitMQFanoutConsumer();
             case RabbitMQConstant
-                    .TYPIC_TYPE:
+                    .TOPIC_TYPE:
                 return new RabbitMQTopicConsumer();
             default:
                 return new RabbitMQDefaultConsumer();

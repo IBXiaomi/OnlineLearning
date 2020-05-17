@@ -22,7 +22,7 @@ public class RabbitMQProducerType {
                     .FANOUT_TYPE:
                 return new RabbitMQFanoutProducer();
             case RabbitMQConstant
-                    .TYPIC_TYPE:
+                    .TOPIC_TYPE:
                 return new RabbitMQTypicProducer();
             default:
                 return new RabbitMQDefaultProducer();

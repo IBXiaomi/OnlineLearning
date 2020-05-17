@@ -11,6 +11,9 @@ public class RabbitMQTypicProducer implements RabbitMQProducer {
 
     private static final String TOPIC_EXCHANGE_NAME = "TOPIC_LOG";
 
+    private static final String TOPIC_QUEUE_EMAIL = "TOPIC_QUEUE_EMAIL";
+
+
     /**
      * topic,模糊匹配模式
      * 关键在与定义routekey，大小不能超过255字节，使用'.'作为分隔符，使用'*'和'#'作为匹配符,'#'代表匹配0和多个字符，'*'代表匹配一个分段的内容
@@ -18,10 +21,12 @@ public class RabbitMQTypicProducer implements RabbitMQProducer {
     @Override
     public void createProducer(String type) {
         try {
-            String routeKey = "com.baxixiaomi.test.rabbitmq";
+            String routeKey = "inform.#.email.#";
             Channel channel = CreateMQConnection.getChannel();
             channel.exchangeDeclare(TOPIC_EXCHANGE_NAME, type);
-            channel.basicPublish(TOPIC_EXCHANGE_NAME, routeKey, null, MESSAGE.getBytes());
+            channel.queueDeclare(TOPIC_QUEUE_EMAIL,true,false,false,null);
+            channel.queueBind(TOPIC_QUEUE_EMAIL,TOPIC_EXCHANGE_NAME,routeKey);
+            channel.basicPublish(TOPIC_EXCHANGE_NAME, "inform.email", null, MESSAGE.getBytes());
         } catch (IOException e) {
 
         }

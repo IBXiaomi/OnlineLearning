@@ -40,5 +40,5 @@ public interface RabbitMQConstant extends Constant {
     /**
      * topic模式
      */
-    String TYPIC_TYPE = "topic";
+    String TOPIC_TYPE = "topic";
 }

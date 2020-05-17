@@ -20,6 +20,10 @@ public class RabbitMQTopicConsumer implements RabbitMQConsumer {
 
     private static final String TOPIC_EXCHANGE_NAME = "TOPIC_LOG";
 
+    private static final String TOPIC_QUEUE_EMAIL = "TOPIC_QUEUE_EMAIL";
+
+    private static final String TOPIC_QUEUE_SMS = "TOPIC_QUEUE_SMS";
+
     /**
      * topic,模糊匹配模式
      * 关键在与定义routekey，大小不能超过255字节，使用'.'作为分隔符，使用'*'和'#'作为匹配符,'#'代表匹配0和多个字符，'*'代表匹配一个分段的内容
@@ -28,11 +32,11 @@ public class RabbitMQTopicConsumer implements RabbitMQConsumer {
     public void createConsumer(String type) {
         try {
             Channel channel = CreateMQConnection.getChannel();
-            channel.exchangeDeclare(TOPIC_EXCHANGE_NAME, "topic");
-            String queueName = channel.queueDeclare().getQueue();
-            String routeKey = "#.rabbitmq";
-            channel.queueBind(queueName, TOPIC_EXCHANGE_NAME, routeKey);
-            channel.basicConsume(queueName, true, topicConsumer(channel));
+            channel.exchangeDeclare(TOPIC_EXCHANGE_NAME, type);
+            channel.queueDeclare(TOPIC_QUEUE_EMAIL,true,false,false,null);
+            String routeKey = "inform.#.email.#";
+            channel.queueBind(TOPIC_QUEUE_EMAIL, TOPIC_EXCHANGE_NAME, routeKey);
+            channel.basicConsume(TOPIC_QUEUE_EMAIL, true, topicConsumer(channel));
         } catch (IOException e) {
 
         }

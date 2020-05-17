@@ -11,6 +11,10 @@ public class RabbitMQFanoutProducer implements RabbitMQProducer {
 
     private static final String EXCHANGE_NAME = "LOG";
 
+    private static final String EXCHANGE_QUEUE_SMS = "SMS";
+
+    private static final String EXCHANGE_QUEUE_EMAIL = "EMAIL";
+
 
     /**
      * fanout发布/订阅模式
@@ -21,6 +25,12 @@ public class RabbitMQFanoutProducer implements RabbitMQProducer {
         try {
             Channel channel = CreateMQConnection.getChannel();
             channel.exchangeDeclare(EXCHANGE_NAME, type);
+            // 声明队列
+            channel.queueDeclare(EXCHANGE_QUEUE_SMS, true, false, false, null);
+            channel.queueDeclare(EXCHANGE_QUEUE_EMAIL, true, false, false, null);
+            // 绑定队列和交换机
+            channel.queueBind(EXCHANGE_QUEUE_SMS, EXCHANGE_NAME, "");
+            channel.queueBind(EXCHANGE_QUEUE_EMAIL, EXCHANGE_NAME, "");
             channel.basicPublish(EXCHANGE_NAME, "", null, MESSAGE.getBytes());
         } catch (IOException e) {
 

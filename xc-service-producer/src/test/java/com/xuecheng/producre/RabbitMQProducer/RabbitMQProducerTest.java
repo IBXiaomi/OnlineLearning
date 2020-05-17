@@ -7,6 +7,6 @@ public class RabbitMQProducerTest {
 
 
     public static void main(String[] args) {
-        RabbitMQProducerType.getRabbitMQProducer(RabbitMQConstant.DEFAULT_TYPE).createProducer(RabbitMQConstant.DEFAULT_TYPE);
+        RabbitMQProducerType.getRabbitMQProducer(RabbitMQConstant.TOPIC_TYPE).createProducer(RabbitMQConstant.TOPIC_TYPE);
     }
 }

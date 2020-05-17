@@ -3,6 +3,7 @@ package com.xuecheng;
 import com.xuecheng.consumer.RabbitMQConsumer;
 import com.xuecheng.consumer.impl.RabbitMQDefaultConsumer;
 import com.xuecheng.consumer.impl.RabbitMQFanoutConsumer;
+import com.xuecheng.consumer.impl.RabbitMQHeaderConsumer;
 import com.xuecheng.consumer.impl.RabbitMQTopicConsumer;
 import com.xuecheng.framework.baseConstant.RabbitMQConstant;
 
@@ -25,6 +26,8 @@ public class RabbitMQConsumerType {
             case RabbitMQConstant
                     .TOPIC_TYPE:
                 return new RabbitMQTopicConsumer();
+            case RabbitMQConstant.HEADER_TYPE:
+                return new RabbitMQHeaderConsumer();
             default:
                 return new RabbitMQDefaultConsumer();
         }

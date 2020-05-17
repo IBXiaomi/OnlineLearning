@@ -41,4 +41,9 @@ public interface RabbitMQConstant extends Constant {
      * topic模式
      */
     String TOPIC_TYPE = "topic";
+
+    /**
+     * header模式
+     */
+    String HEADER_TYPE = "headers";
 }

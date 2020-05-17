@@ -11,6 +11,6 @@ import com.xuecheng.framework.baseConstant.RabbitMQConstant;
  */
 public class RabbitMQConsumerTest {
     public static void main(String[] args) {
-        RabbitMQConsumerType.getRabbitMQConsumer(RabbitMQConstant.TOPIC_TYPE).createConsumer(RabbitMQConstant.TOPIC_TYPE);
+        RabbitMQConsumerType.getRabbitMQConsumer(RabbitMQConstant.HEADER_TYPE).createConsumer(RabbitMQConstant.HEADER_TYPE);
     }
 }

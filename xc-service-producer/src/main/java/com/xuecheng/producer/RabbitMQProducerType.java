@@ -3,6 +3,7 @@ package com.xuecheng.producer;
 import com.xuecheng.framework.baseConstant.RabbitMQConstant;
 import com.xuecheng.producer.impl.producer.RabbitMQDefaultProducer;
 import com.xuecheng.producer.impl.producer.RabbitMQFanoutProducer;
+import com.xuecheng.producer.impl.producer.RabbitMQHeaderProducer;
 import com.xuecheng.producer.impl.producer.RabbitMQTypicProducer;
 
 /**
@@ -24,6 +25,8 @@ public class RabbitMQProducerType {
             case RabbitMQConstant
                     .TOPIC_TYPE:
                 return new RabbitMQTypicProducer();
+            case RabbitMQConstant.HEADER_TYPE:
+                return new RabbitMQHeaderProducer();
             default:
                 return new RabbitMQDefaultProducer();
         }

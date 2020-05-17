@@ -1,6 +1,6 @@
 package com.xuecheng.consumer.RabbitMQConsumerTest;
 
-import com.xuecheng.RabbitMQConsumerType;
+import com.xuecheng.consumer.demo.RabbitMQConsumerType;
 import com.xuecheng.framework.baseConstant.RabbitMQConstant;
 
 /**

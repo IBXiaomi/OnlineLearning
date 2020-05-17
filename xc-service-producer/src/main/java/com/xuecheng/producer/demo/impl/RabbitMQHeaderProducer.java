@@ -1,4 +1,4 @@
-package com.xuecheng.producer.impl.producer;
+package com.xuecheng.producer.demo.impl;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;

@@ -1,10 +1,10 @@
-package com.xuecheng.consumer.impl;
+package com.xuecheng.consumer.demo.impl;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
-import com.xuecheng.consumer.RabbitMQConsumer;
+import com.xuecheng.consumer.demo.RabbitMQConsumer;
 import com.xuecheng.framework.rabbitMQConnection.CreateMQConnection;
 
 import java.io.IOException;

@@ -1,10 +1,9 @@
-package com.xuecheng;
+package com.xuecheng.consumer.demo;
 
-import com.xuecheng.consumer.RabbitMQConsumer;
-import com.xuecheng.consumer.impl.RabbitMQDefaultConsumer;
-import com.xuecheng.consumer.impl.RabbitMQFanoutConsumer;
-import com.xuecheng.consumer.impl.RabbitMQHeaderConsumer;
-import com.xuecheng.consumer.impl.RabbitMQTopicConsumer;
+import com.xuecheng.consumer.demo.impl.RabbitMQDefaultConsumer;
+import com.xuecheng.consumer.demo.impl.RabbitMQFanoutConsumer;
+import com.xuecheng.consumer.demo.impl.RabbitMQHeaderConsumer;
+import com.xuecheng.consumer.demo.impl.RabbitMQTopicConsumer;
 import com.xuecheng.framework.baseConstant.RabbitMQConstant;
 
 /**

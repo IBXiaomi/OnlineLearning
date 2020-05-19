@@ -35,7 +35,7 @@
         <fastdfs-client-java.version>1.27.0.0</fastdfs-client-java.version>
         <mysql-connector-java.version>5.1.40</mysql-connector-java.version>
         <elasticsearch.version>6.2.1</elasticsearch.version>
-        <guava.version>28.0-jre</guava.version>
+        <guava.version>28.2-jre</guava.version>
         <rabbitmq.vresion>5.7.3</rabbitmq.vresion>
         <mongo-java-driver.version>3.11.2</mongo-java-driver.version>
     </properties>
@@ -145,7 +145,6 @@
                 <artifactId>fastdfs-client-java</artifactId>
                 <version>${fastdfs-client-java.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.elasticsearch.client</groupId>
                 <artifactId>elasticsearch-rest-high-level-client</artifactId>
@@ -179,7 +178,6 @@
 <!--                <scope>runtime</scope>-->
 <!--                <optional>true</optional>-->
 <!--            </dependency>-->
-
         </dependencies>
     </dependencyManagement>
     <build>

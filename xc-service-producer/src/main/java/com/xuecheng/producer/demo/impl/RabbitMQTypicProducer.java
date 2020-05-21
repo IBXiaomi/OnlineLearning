@@ -3,9 +3,17 @@ package com.xuecheng.producer.demo.impl;
 import com.rabbitmq.client.Channel;
 import com.xuecheng.framework.rabbitMQConnection.CreateMQConnection;
 import com.xuecheng.producer.RabbitMQProducer;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
+/**
+ * topic模式的生产者
+ *
+ * @author 吧嘻小米
+ * @date 2020/05/21
+ */
+@Slf4j
 public class RabbitMQTypicProducer implements RabbitMQProducer {
     private static final String MESSAGE = "hello-baxixiaomi";
 
@@ -24,11 +32,11 @@ public class RabbitMQTypicProducer implements RabbitMQProducer {
             String routeKey = "inform.#.email.#";
             Channel channel = CreateMQConnection.getChannel();
             channel.exchangeDeclare(TOPIC_EXCHANGE_NAME, type);
-            channel.queueDeclare(TOPIC_QUEUE_EMAIL,true,false,false,null);
-            channel.queueBind(TOPIC_QUEUE_EMAIL,TOPIC_EXCHANGE_NAME,routeKey);
+            channel.queueDeclare(TOPIC_QUEUE_EMAIL, true, false, false, null);
+            channel.queueBind(TOPIC_QUEUE_EMAIL, TOPIC_EXCHANGE_NAME, routeKey);
             channel.basicPublish(TOPIC_EXCHANGE_NAME, "inform.email", null, MESSAGE.getBytes());
         } catch (IOException e) {
-
+            log.error("Declare queue failed {}", e.getMessage());
         }
     }
 }

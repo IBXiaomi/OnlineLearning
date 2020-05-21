@@ -3,9 +3,18 @@ package com.xuecheng.producer.demo.impl;
 import com.rabbitmq.client.Channel;
 import com.xuecheng.framework.rabbitMQConnection.CreateMQConnection;
 import com.xuecheng.producer.RabbitMQProducer;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
+/**
+ * 发布订阅的生产者
+ *
+ * @author 吧嘻小米
+ * @date 2020/05/21
+ *
+ */
+@Slf4j
 public class RabbitMQFanoutProducer implements RabbitMQProducer {
     private static final String MESSAGE = "hello-baxixiaomi";
 
@@ -33,7 +42,7 @@ public class RabbitMQFanoutProducer implements RabbitMQProducer {
             channel.queueBind(EXCHANGE_QUEUE_EMAIL, EXCHANGE_NAME, "");
             channel.basicPublish(EXCHANGE_NAME, "", null, MESSAGE.getBytes());
         } catch (IOException e) {
-
+            log.error("Declare queue failed {}", e.getMessage());
         }
     }
 }

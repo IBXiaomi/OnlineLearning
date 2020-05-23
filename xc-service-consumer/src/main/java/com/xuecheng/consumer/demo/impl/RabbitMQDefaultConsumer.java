@@ -6,6 +6,7 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.xuecheng.consumer.demo.RabbitMQConsumer;
 import com.xuecheng.framework.rabbitMQConnection.CreateMQConnection;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
@@ -15,6 +16,7 @@ import java.io.IOException;
  * @author 吧嘻小米
  * @date 2020/05/16
  */
+@Slf4j
 public class RabbitMQDefaultConsumer implements RabbitMQConsumer {
     private static final String QUEUE = "baxixiaomi";
 
@@ -28,7 +30,7 @@ public class RabbitMQDefaultConsumer implements RabbitMQConsumer {
             channel.queueDeclare(QUEUE, true, false, false, null);
             channel.basicConsume(QUEUE, true, directConsumer(channel));
         } catch (IOException e) {
-
+            log.error("Declare queue failed {}",e.getMessage());
         }
     }
 

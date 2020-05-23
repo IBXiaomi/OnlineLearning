@@ -6,6 +6,7 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 import com.xuecheng.consumer.demo.RabbitMQConsumer;
 import com.xuecheng.framework.rabbitMQConnection.CreateMQConnection;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -17,6 +18,7 @@ import java.util.Map;
  * @author 吧嘻小米
  * @date 2020/05/16
  */
+@Slf4j
 public class RabbitMQHeaderConsumer implements RabbitMQConsumer {
     private static final String MESSAGE = "hello-baxixiaomi";
 
@@ -41,7 +43,7 @@ public class RabbitMQHeaderConsumer implements RabbitMQConsumer {
             channel.queueBind(HEADER_QUEUE_EMAIL, HEADER_EXCHANGE_NAME, "", header);
             channel.basicConsume(HEADER_QUEUE_EMAIL, true, headerConsumer(channel));
         } catch (IOException e) {
-
+            log.error("Declare queue failed {}",e.getMessage());
         }
     }
     private static DefaultConsumer headerConsumer(Channel channel) {

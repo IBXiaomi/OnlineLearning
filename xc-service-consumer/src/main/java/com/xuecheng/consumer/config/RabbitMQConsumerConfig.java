@@ -3,6 +3,7 @@ package com.xuecheng.consumer.config;
 import com.xuecheng.framework.baseConstant.RabbitMQConstant;
 import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,8 +16,48 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConsumerConfig {
 
+    private static final String EXCHANGE_CMS_PAGE = "cms_page_exchange";
+
+    private static final String QUEUE_CMS_PAGE = "cms_page_queue";
+
+    @Value("xuecheng.mq.routingKey")
+    String ROUTING_KEY;
+
+    /**
+     * 声明页面交换机
+     *
+     * @return 交换机
+     */
+    @Bean(EXCHANGE_CMS_PAGE)
+    public Exchange getCmsPageExchange() {
+        return ExchangeBuilder.topicExchange(EXCHANGE_CMS_PAGE).durable(true).build();
+    }
+
+    /**
+     * 声明队列
+     *
+     * @return 返回队列
+     */
+    @Bean(QUEUE_CMS_PAGE)
+    public Queue getCmsPageQueue() {
+        return new Queue(QUEUE_CMS_PAGE);
+    }
+
+    /**
+     * 绑定交换机和队列
+     *
+     * @param exchange 交换机
+     * @param queue 队列
+     * @return
+     */
+    public Binding bindingCmsPageExchageAndQueue(@Qualifier(EXCHANGE_CMS_PAGE) Exchange exchange,
+                                                 @Qualifier(QUEUE_CMS_PAGE) Queue queue) {
+        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY).noargs();
+    }
+
     /**
      * 声明交换机
+     * 选择持久化
      *
      * @return 交换机
      */
@@ -67,5 +108,5 @@ public class RabbitMQConsumerConfig {
                                               @Qualifier(RabbitMQConstant.TopicConstant.TOPIC_EXCHANGE_NAME) Exchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with("inform.#.sms.#").noargs();
     }
-    
+
 }

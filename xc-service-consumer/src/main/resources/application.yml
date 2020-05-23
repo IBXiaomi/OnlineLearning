@@ -2,11 +2,20 @@ server:
   port: 44000
 spring:
   application:
-    name: xc_service_rebbitmq
+    name: xc_service_manage_cms_client
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: xc_cms
   rabbitmq:
     host: 192.168.200.131
     port: 5672
     username: wjw
     password: wjw
     virtual-host: /
+xuecheng:
+  mq:
+    queue: queue_cms_page
+    routingKey: 5a751fab6abb5044e0d19ea1
+
 

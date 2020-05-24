@@ -64,7 +64,8 @@ public class RabbitMQConsumerTest {
         System.out.println(cmsSite);
         InputStream htmlFileById = findHtmlFileById(cmsPage.getHtmlFileId());
         String pageName = cmsPage.getPageName();
-        File file = new File("F:/TEST/"+pageName);
+        String filePath = "F:"+File.separator+"TEST"+ File.separator+pageName;
+        File file = new File(filePath);
         // 关于window环境下，文件权限不足的问题，需要指定到具体的文件
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         IOUtils.copy(htmlFileById, fileOutputStream);

@@ -7,7 +7,15 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017
       database: xc_cms
-
+  rabbitmq:
+    host: 192.168.200.131
+    port: 5672
+    username: wjw
+    password: wjw
+    virtual-host: /
+xuecheng:
+  mq:
+    routingKey: 5a751fab6abb5044e0d19ea1
   #  devtools:
   #    restart:
   #      enabled: true #开启热部署

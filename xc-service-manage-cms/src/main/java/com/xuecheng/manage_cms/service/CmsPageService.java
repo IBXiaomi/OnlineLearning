@@ -1,8 +1,10 @@
 package com.xuecheng.manage_cms.service;
 
+import com.alibaba.fastjson.JSON;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSDownloadStream;
 import com.mongodb.client.gridfs.model.GridFSFile;
+import com.xuecheng.framework.baseConstant.RabbitMQConstant;
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.CmsTemplate;
 import com.xuecheng.framework.domain.cms.request.QueryPageRequest;
@@ -23,7 +25,11 @@ import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.bson.types.ObjectId;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -34,10 +40,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 /**
  * cms页面管理
@@ -48,6 +54,8 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class CmsPageService {
+
+    private static final String RABBITMQ_PROPERTIES = "rabbitmq.properties";
 
     @Autowired
     CmsPageRepository cmsPageRepository;
@@ -63,6 +71,9 @@ public class CmsPageService {
 
     @Autowired
     GridFSBucket gridFSBucket;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
     /**
      * 分页查询,条件查询
@@ -145,6 +156,7 @@ public class CmsPageService {
             pageById.setPageWebPath(cmsPage.getPageWebPath());
             pageById.setPageType(cmsPage.getPageType());
             pageById.setDataUrl(cmsPage.getDataUrl());
+            pageById.setHtmlFileId(cmsPage.getHtmlFileId());
             cmsPageRepository.save(pageById);
             return new CmsPageResult(CommonCode.SUCCESS, cmsPage);
         } else {
@@ -316,6 +328,81 @@ public class CmsPageService {
             log.error("cmsPage is not exist");
         }
         return "";
+    }
+
+    /**
+     * 发布页面
+     *
+     * @param pageId 页面id
+     */
+    public ResponseResult publishPage(String pageId) {
+        // 根据页面id生成静态化文件
+        String html = createHtmlByTemplate(pageId);
+        //将静态化页面存储在mongodb中
+        CmsPage cmsPage = findPageById(pageId);
+        if (null == cmsPage) {
+            return new CmsPageResult(CmsCode.CMS_GENERATEHTML_SAVEHTMLERROR, cmsPage);
+        }
+        byte[] bytes = html.getBytes(StandardCharsets.UTF_8);
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+        // 获取到html文件的id
+        ObjectId objectId = gridFsTemplate.store(byteArrayInputStream, cmsPage.getPageName());
+        String htmlFileId = objectId.toString();
+        cmsPage.setHtmlFileId(htmlFileId);
+        // 获取routingkey
+        String siteId = cmsPage.getSiteId();
+        //saveRoutingKey(siteId);
+        // 更新cmsPage页面
+        CmsPageResult cmsPageResult = editCmsPageById(pageId, cmsPage);
+        boolean result = sendMessageToConsumer(siteId, pageId);
+        if (result) {
+            return cmsPageResult;
+        } else {
+            return new ResponseResult(CmsCode.CMS_GENERATEHTML_SAVEHTMLERROR);
+        }
+    }
+
+    /**
+     * 将routingkey加载配置文件中
+     *
+     * @param routingKey key
+     */
+    private void saveRoutingKey(String routingKey) {
+        try {
+            Properties properties = PropertiesLoaderUtils.loadAllProperties(RABBITMQ_PROPERTIES);
+            String fileRoutingKey = properties.getProperty("xuecheng.mq.routingKey");
+            if (StringUtils.isEmpty(fileRoutingKey)) {
+                properties.setProperty("xuecheng.mq.routingKey", routingKey);
+            }
+        } catch (IOException e) {
+            log.error("load rabbitmq.properties failed {}", e.getMessage());
+        }
+    }
+
+    /**
+     * 向mq发送消息
+     *
+     * @param siteId routingKey
+     * @param pageId 页面id
+     */
+    private boolean sendMessageToConsumer(String siteId, String pageId) {
+        try {
+            CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
+            // 组织消息体
+            Map<String, String> message = new HashMap<>();
+            message.put("pageId", pageId);
+            String jsonString = JSON.toJSONString(message);
+            // 通知mq
+            //rabbitTemplate.convertAndSend(RabbitMQConstant.TopicConstant.CMS_PAGE_EXCHANGE, siteId, jsonString);
+            boolean result = (boolean) rabbitTemplate.convertSendAndReceive(RabbitMQConstant.directConstant.CMS_PAGE_DIRECT_EXCHANGE,
+                    siteId, jsonString, correlationId);
+            Thread.sleep(10000);
+            log.error("producer send message is {}, consumer result is {}", message, result);
+            return result;
+        } catch (InterruptedException e) {
+            log.error("InterruptedException {}", e.getMessage());
+        }
+        return false;
     }
 }
 

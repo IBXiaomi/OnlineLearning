@@ -16,9 +16,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConsumerConfig {
 
-    private static final String EXCHANGE_CMS_PAGE = "cms_page_exchange";
-
-    private static final String QUEUE_CMS_PAGE = "cms_page_queue";
 
     @Value("xuecheng.mq.routingKey")
     String ROUTING_KEY;
@@ -28,9 +25,9 @@ public class RabbitMQConsumerConfig {
      *
      * @return 交换机
      */
-    @Bean(EXCHANGE_CMS_PAGE)
+    @Bean(RabbitMQConstant.directConstant.CMS_PAGE_DIRECT_EXCHANGE)
     public Exchange getCmsPageExchange() {
-        return ExchangeBuilder.topicExchange(EXCHANGE_CMS_PAGE).durable(true).build();
+        return ExchangeBuilder.directExchange(RabbitMQConstant.directConstant.CMS_PAGE_DIRECT_EXCHANGE).durable(true).build();
     }
 
     /**
@@ -38,9 +35,9 @@ public class RabbitMQConsumerConfig {
      *
      * @return 返回队列
      */
-    @Bean(QUEUE_CMS_PAGE)
+    @Bean(RabbitMQConstant.directConstant.CMS_PAGE_DIRECT_QUEUE)
     public Queue getCmsPageQueue() {
-        return new Queue(QUEUE_CMS_PAGE);
+        return new Queue(RabbitMQConstant.directConstant.CMS_PAGE_DIRECT_QUEUE);
     }
 
     /**
@@ -50,63 +47,64 @@ public class RabbitMQConsumerConfig {
      * @param queue 队列
      * @return
      */
-    public Binding bindingCmsPageExchageAndQueue(@Qualifier(EXCHANGE_CMS_PAGE) Exchange exchange,
-                                                 @Qualifier(QUEUE_CMS_PAGE) Queue queue) {
-        return BindingBuilder.bind(queue).to(exchange).with(ROUTING_KEY).noargs();
-    }
-
-    /**
-     * 声明交换机
-     * 选择持久化
-     *
-     * @return 交换机
-     */
-    @Bean(RabbitMQConstant.TopicConstant.TOPIC_EXCHANGE_NAME)
-    public Exchange getExchange() {
-        return ExchangeBuilder.topicExchange(RabbitMQConstant.TopicConstant.TOPIC_EXCHANGE_NAME).durable(true).build();
-    }
-
-    /**
-     * 声明EMAIL队列
-     *
-     * @return 队列
-     */
-    @Bean(RabbitMQConstant.TopicConstant.TOPIC_QUEUE_EMAIL)
-    public Queue getEmailQueue() {
-        return new Queue(RabbitMQConstant.TopicConstant.TOPIC_QUEUE_EMAIL);
-    }
-
-    /**
-     * 声明SMS队列
-     *
-     * @return 队列
-     */
-    @Bean(RabbitMQConstant.TopicConstant.TOPIC_QUEUE_SMS)
-    public Queue getSmsQueue() {
-        return new Queue(RabbitMQConstant.TopicConstant.TOPIC_QUEUE_SMS);
-    }
-
-    /**
-     * 绑定EMAIL队列和交换机
-     *
-     * @return Binding
-     */
     @Bean
-    public Binding bindingEmailExchangeAndQueue(@Qualifier(RabbitMQConstant.TopicConstant.TOPIC_QUEUE_EMAIL) Queue queue,
-                                                @Qualifier(RabbitMQConstant.TopicConstant.TOPIC_EXCHANGE_NAME) Exchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("inform.#.email.#").noargs();
+    public Binding bindingCmsPageExchangeAndQueue(@Qualifier(RabbitMQConstant.directConstant.CMS_PAGE_DIRECT_EXCHANGE) Exchange exchange,
+                                                 @Qualifier(RabbitMQConstant.directConstant.CMS_PAGE_DIRECT_QUEUE) Queue queue) {
+        return BindingBuilder.bind(queue).to(exchange).with("5a751fab6abb5044e0d19ea1").noargs();
     }
 
-
-    /**
-     * 绑定SMs队列和交换机
-     *
-     * @return Binding
-     */
-    @Bean
-    public Binding bindingSmsExchangeAndQueue(@Qualifier(RabbitMQConstant.TopicConstant.TOPIC_QUEUE_SMS) Queue queue,
-                                              @Qualifier(RabbitMQConstant.TopicConstant.TOPIC_EXCHANGE_NAME) Exchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("inform.#.sms.#").noargs();
-    }
+//    /**
+//     * 声明交换机
+//     * 选择持久化
+//     *
+//     * @return 交换机
+//     */
+//    @Bean(RabbitMQConstant.TopicConstant.TOPIC_EXCHANGE_NAME)
+//    public Exchange getExchange() {
+//        return ExchangeBuilder.topicExchange(RabbitMQConstant.TopicConstant.TOPIC_EXCHANGE_NAME).durable(true).build();
+//    }
+//
+//    /**
+//     * 声明EMAIL队列
+//     *
+//     * @return 队列
+//     */
+//    @Bean(RabbitMQConstant.TopicConstant.TOPIC_QUEUE_EMAIL)
+//    public Queue getEmailQueue() {
+//        return new Queue(RabbitMQConstant.TopicConstant.TOPIC_QUEUE_EMAIL);
+//    }
+//
+//    /**
+//     * 声明SMS队列
+//     *
+//     * @return 队列
+//     */
+//    @Bean(RabbitMQConstant.TopicConstant.TOPIC_QUEUE_SMS)
+//    public Queue getSmsQueue() {
+//        return new Queue(RabbitMQConstant.TopicConstant.TOPIC_QUEUE_SMS);
+//    }
+//
+//    /**
+//     * 绑定EMAIL队列和交换机
+//     *
+//     * @return Binding
+//     */
+//    @Bean
+//    public Binding bindingEmailExchangeAndQueue(@Qualifier(RabbitMQConstant.TopicConstant.TOPIC_QUEUE_EMAIL) Queue queue,
+//                                                @Qualifier(RabbitMQConstant.TopicConstant.TOPIC_EXCHANGE_NAME) Exchange exchange) {
+//        return BindingBuilder.bind(queue).to(exchange).with("inform.#.email.#").noargs();
+//    }
+//
+//
+//    /**
+//     * 绑定SMs队列和交换机
+//     *
+//     * @return Binding
+//     */
+//    @Bean
+//    public Binding bindingSmsExchangeAndQueue(@Qualifier(RabbitMQConstant.TopicConstant.TOPIC_QUEUE_SMS) Queue queue,
+//                                              @Qualifier(RabbitMQConstant.TopicConstant.TOPIC_EXCHANGE_NAME) Exchange exchange) {
+//        return BindingBuilder.bind(queue).to(exchange).with("inform.#.sms.#").noargs();
+//    }
 
 }

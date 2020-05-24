@@ -68,4 +68,12 @@ public interface CmsPageControllerApi {
      * @return 返回修改结果
      */
     CmsPageResult update(String id, CmsPage cmsPage);
+
+    /**
+     * 发布页面
+     *
+     * @param pageId 页面id
+     * @return 发布结果
+     */
+    ResponseResult publishPage(String pageId);
 }

@@ -47,6 +47,9 @@ public interface RabbitMQConstant extends Constant {
      */
     String HEADER_TYPE = "headers";
 
+    /**
+     * TOPIC模式常量
+     */
     interface TopicConstant {
 
         String MESSAGE = "hello-baxixiaomi";
@@ -56,5 +59,19 @@ public interface RabbitMQConstant extends Constant {
         String TOPIC_QUEUE_EMAIL = "TOPIC_QUEUE_EMAIL";
 
         String TOPIC_QUEUE_SMS = "TOPIC_QUEUE_SMS";
+
+        String CMS_PAGE_TOPIC_QUEUE = "CMS_PAGE_QUEUE";
+
+        String CMS_PAGE_TOPIC_EXCHANGE = "CMS_PAGE_EXCHANGE";
+    }
+
+    /**
+     * direct模式
+     */
+    interface directConstant {
+
+        String CMS_PAGE_DIRECT_QUEUE = "CMS_PAGE_QUEUE";
+
+        String CMS_PAGE_DIRECT_EXCHANGE = "CMS_PAGE_EXCHANGE";
     }
 }

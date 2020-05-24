@@ -91,4 +91,15 @@ public class CmsPageController implements CmsPageControllerApi {
         return cmsPageService.editCmsPageById(id, cmsPage);
     }
 
+    /**
+     * 发布页面
+     *
+     * @param pageId 页面id
+     * @return 发布结果
+     */
+    @Override
+    @PostMapping("/publishPage/{pageId}")
+    public ResponseResult publishPage(@PathVariable("pageId") String pageId) {
+        return cmsPageService.publishPage(pageId);
+    }
 }

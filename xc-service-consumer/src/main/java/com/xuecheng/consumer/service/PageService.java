@@ -7,6 +7,8 @@ import com.xuecheng.consumer.dao.CmsPageRepository;
 import com.xuecheng.consumer.dao.CmsSiteRepository;
 import com.xuecheng.framework.domain.cms.CmsPage;
 import com.xuecheng.framework.domain.cms.CmsSite;
+import com.xuecheng.framework.domain.cms.response.CmsCode;
+import com.xuecheng.framework.exception.CustomExceptionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -50,21 +52,42 @@ public class PageService {
      *
      * @param pageId 页面id
      */
-    public void saveCmsPageToGridFs(String pageId) {
+    public Boolean saveCmsPageToServer(String pageId) {
         InputStream inputStream = null;
         FileOutputStream fileOutputStream = null;
+        boolean flag = false;
         if (StringUtils.isEmpty(pageId)) {
             log.error("pageId is null ,find cmsPage failed");
-            return;
+            return flag;
         }
         try {
             CmsPage cmsPage = getCmsPageById(pageId);
+            // GRIDFS文件中查找对应的文件
             inputStream = findHtmlFileById(cmsPage.getHtmlFileId());
+            // 获取文件的物理路径
             CmsSite cmsSite = findCmsSitePathById(cmsPage.getSiteId());
             String sitePhysicalPath = cmsSite.getSitePhysicalPath();
-            String path = sitePhysicalPath + cmsPage.getPagePhysicalPath() + cmsPage.getPageName();
-            fileOutputStream = new FileOutputStream(new File(path));
+            if (StringUtils.isEmpty(cmsPage.getPagePhysicalPath())
+                    || StringUtils.isEmpty(cmsPage.getPageName())) {
+                log.error("file path is null , check path ");
+                throw CustomExceptionFactory.getCustomException(CmsCode.CMS_GENERATEHTML_SAVEHTMLERROR);
+            }
+            String filePath = cmsPage.getPagePhysicalPath() + cmsPage.getPageName();
+            File file = new File(filePath);
+            if (!file.exists()) {
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                    file.createNewFile();
+                    flag = true;
+                } else {
+                    file.createNewFile();
+                    flag = true;
+                }
+            }
+            fileOutputStream = new FileOutputStream(file);
+            log.info("file is {},copy htmlFile start ", file);
             IOUtils.copy(inputStream, fileOutputStream);
+            return flag;
         } catch (IOException e) {
             log.error("get cmsPage failed {}", e.getMessage());
         } finally {
@@ -75,8 +98,9 @@ public class PageService {
                 log.error("close inputStream or outputStream failed {}", e.getMessage());
             }
         }
-
+        return flag;
     }
+
     /**
      * 根据id获取当前站点的相对路径
      *

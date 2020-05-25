@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * consumer的接收消息处理
@@ -66,7 +67,7 @@ public class RabbitMQReceiveHandler {
     @RabbitListener(queues = {RabbitMQConstant.directConstant.CMS_PAGE_DIRECT_QUEUE})
     public boolean getCmsPageMessage(Message message) {
         try {
-            String byteMessage = new String(message.getBody(), "utf-8");
+            String byteMessage = new String(message.getBody(), StandardCharsets.UTF_8);
             JSONObject messageObject = JSON.parseObject(byteMessage);
             String pageId = (String) messageObject.get("pageId");
             log.debug("get page id is {}", pageId);

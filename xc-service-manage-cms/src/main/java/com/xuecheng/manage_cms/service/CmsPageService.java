@@ -400,7 +400,7 @@ public class CmsPageService {
             log.error("producer send message is {}, consumer result is {}", message, result);
             return result;
         } catch (InterruptedException e) {
-            log.error("InterruptedException {}", e.getMessage());
+            log.error("The current thread is interrupted and will be cleared {}", e.getMessage());
         }
         return false;
     }

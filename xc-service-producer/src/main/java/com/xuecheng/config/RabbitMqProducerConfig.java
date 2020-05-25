@@ -1,5 +1,6 @@
 package com.xuecheng.config;
 
+
 import com.xuecheng.framework.baseConstant.RabbitMQConstant;
 import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Qualifier;

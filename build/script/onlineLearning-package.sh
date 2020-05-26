@@ -2,7 +2,7 @@
 
 DIRNAME=$(dirname $0)
 CURRENT_PATH=$(cd ${DIRNAME}; pwd)
-CODE_HOME=$(cd ${CURRENT_PATH}/../../)
+CODE_HOME=$(cd ${CURRENT_PATH}/../../; pwd)
 CILog=${CODE_HOME}/log/CILog.log
 
 # # # # # # # # # # # # #

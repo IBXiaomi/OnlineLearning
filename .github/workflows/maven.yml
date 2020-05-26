@@ -23,4 +23,4 @@ jobs:
       with:
         java-version: 1.8
     - name: Build with Maven
-      run: sh /build/script/onlinelearning-package.sh
+      run: sh /build/script/onlineLearning-package.sh

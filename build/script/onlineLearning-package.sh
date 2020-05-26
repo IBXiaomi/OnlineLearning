@@ -5,9 +5,9 @@ CURRENT_PATH=$(cd ${DIRNAME}; pwd)
 CODE_HOME=$(cd ${CURRENT_PATH}../../)
 CILog=${CODE_HOME}/log/CILog.log
 
------------------------
-# function showLog    |
------------------------
+# # # # # # # # # # # # #
+#     function showLog  #
+# # # # # # # # # # # # #
 function showLog(){
     local current_user=$(whoami | awk '{print $1}')
     local current_user_ip=$(who am i | awk -F ' ' '{print $NF}' | grep -E "[0-9\.]*")
@@ -16,9 +16,9 @@ function showLog(){
 }
 
 
------------------------
-# function package       |
------------------------
+# # # # # # # # # # # # #
+#     function package  #
+# # # # # # # # # # # # #
 
 function package(){
     #local package_param=${CODE_HOME}/build/conf/onlineLearning-package.conf
@@ -40,9 +40,9 @@ function package(){
     #done
 }
 
------------------------
-# function init       |
------------------------
+# # # # # # # # # # # # #
+#      function init    #
+# # # # # # # # # # # # #
 function init(){
     if [ ! -d ${CILog}../ ];then
         showLog "CILog  dir is not exist will be create"
@@ -64,9 +64,9 @@ function init(){
 
 }
 
------------------------
-# function main       |
------------------------
+# # # # # # # # # # # # #
+#    function main      #
+# # # # # # # # # # # # #
 function main(){
     init
     package

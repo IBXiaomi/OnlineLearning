@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.baxixiaomi</groupId>
+    <artifactId>OnlineLearning</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>xc-framework-common</module>
+        <module>xc-framework-model</module>
+        <module>xc-framework-parent</module>
+        <module>xc-framework-utils</module>
+        <module>xc-service-consumer</module>
+        <module>xc-service-freemarker</module>
+        <module>xc-service-manage-cms</module>
+        <module>xc-service-producer</module>
+        <module>xc-service-api</module>
+    </modules>
+
+</project>

@@ -8,12 +8,15 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Created by admin on 2018/2/10.
+ * 课程管理实体类
+ *
+ * @author 吧嘻小米
+ * @date 2020/05/31
  */
 @Data
 @ToString
 @Entity
-@Table(name="course_base")
+@Table(name = "course_base")
 //@GenericGenerator(name = "jpa-assigned", strategy = "assigned")
 @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 public class CourseBase implements Serializable {
@@ -31,9 +34,9 @@ public class CourseBase implements Serializable {
     private String teachmode;
     private String description;
     private String status;
-    @Column(name="company_id")
+    @Column(name = "company_id")
     private String companyId;
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private String userId;
 
 }

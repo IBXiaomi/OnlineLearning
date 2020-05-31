@@ -64,9 +64,16 @@ public class RabbitMQReceiveHandler {
         }
     }
 
+    /**
+     * 页面发布处理
+     *
+     * @param message 消息体
+     * @return 处理结果
+     */
     @RabbitListener(queues = {RabbitMQConstant.directConstant.CMS_PAGE_DIRECT_QUEUE})
     public boolean getCmsPageMessage(Message message) {
         try {
+            log.info("start to consumer publish page, get message is {}", message.getBody());
             String byteMessage = new String(message.getBody(), StandardCharsets.UTF_8);
             JSONObject messageObject = JSON.parseObject(byteMessage);
             String pageId = (String) messageObject.get("pageId");

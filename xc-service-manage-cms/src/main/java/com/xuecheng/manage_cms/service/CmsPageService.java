@@ -396,7 +396,7 @@ public class CmsPageService {
             //rabbitTemplate.convertAndSend(RabbitMQConstant.TopicConstant.CMS_PAGE_EXCHANGE, siteId, jsonString);
             boolean result = (boolean) rabbitTemplate.convertSendAndReceive(RabbitMQConstant.directConstant.CMS_PAGE_DIRECT_EXCHANGE,
                     siteId, jsonString, correlationId);
-            Thread.sleep(10000);
+            Thread.sleep(1000);
             log.error("producer send message is {}, consumer result is {}", message, result);
             return result;
         } catch (InterruptedException e) {

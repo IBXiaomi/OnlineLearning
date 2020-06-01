@@ -20,6 +20,7 @@
         <module>xc-service-manage-cms</module>
         <module>xc-service-producer</module>
         <module>xc-service-api</module>
+        <module>xc-service-course</module>
     </modules>
 
 </project>

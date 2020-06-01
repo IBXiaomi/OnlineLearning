@@ -75,6 +75,7 @@ public class PageService {
             String filePath = cmsPage.getPagePhysicalPath() + cmsPage.getPageName();
             File file = new File(filePath);
             if (!file.exists()) {
+                log.info("file path {}, create file", filePath);
                 if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
                     file.createNewFile();
@@ -83,9 +84,16 @@ public class PageService {
                     file.createNewFile();
                     flag = true;
                 }
+            } else {
+                log.info("file path {} file exist, delete file", filePath);
+                if (file.delete()) {
+                    flag = true;
+                } else {
+                    flag = false;
+                }
             }
             fileOutputStream = new FileOutputStream(file);
-            log.info("file is {},copy htmlFile start ", file);
+            log.info("file is {}, copy htmlFile start ", file);
             IOUtils.copy(inputStream, fileOutputStream);
             return flag;
         } catch (IOException e) {

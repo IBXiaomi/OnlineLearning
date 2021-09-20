@@ -34,7 +34,7 @@
         <fastjson.version>1.2.70</fastjson.version>
         <fastdfs-client-java.version>1.27.0.0</fastdfs-client-java.version>
         <mysql-connector-java.version>5.1.40</mysql-connector-java.version>
-        <elasticsearch.version>7.11.2</elasticsearch.version>
+        <elasticsearch.version>7.14.0</elasticsearch.version>
         <guava.version>28.2-jre</guava.version>
         <rabbitmq.vresion>5.7.3</rabbitmq.vresion>
         <mongo-java-driver.version>3.11.2</mongo-java-driver.version>
